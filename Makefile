@@ -1,5 +1,5 @@
 CC=g++
-LDIR=./Boost/boost_1_61_0/
+LDIR=$(HOME)/CODE/libs/Boost/boost_1_61_0/
 CFLAGS=-I$(LDIR) -std=c++11 #-stdlib=libc++
 #CFLAGS=-I$(LDIR) -stdlib=libc++
 #CFLAGS=-I$(LDIR) 
