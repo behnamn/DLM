@@ -1,0 +1,4 @@
+#!/bin/sh
+
+../bin/DLM input.txt
+
