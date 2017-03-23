@@ -1,15 +1,11 @@
 /*
  *
- *	New.cpp
+ *	Origami.cpp
  * 	Author: Behnam
  *
  */
 
-#include "Strand.h"
-
-
-
-
+#include "Origami.h"
 
 
 
