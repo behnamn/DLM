@@ -10,9 +10,12 @@
 
 #include "Headers.h"
 #include "Common.h"
+#include "Graph.h"
 
 class Domain {
 public:
+	Domain();
+	Domain(int&);
 	int id; //use vertices.first instead
 	pair<int,int> nucs;
 	pair<int,int> vertices;

@@ -63,3 +63,22 @@ double minutes(double seconds) {
 double Cpm2spC(double Cpm){
 	return 1. / (Cpm / 60.);
 }
+
+
+int circ_dist(int p1, int p2, int scaffold_length){
+	int a1, a2, result;
+	a1 = ((scaffold_length + p1 - p2) % scaffold_length) +1 ;
+	a2 = ((scaffold_length + p2 - p1) % scaffold_length) +1 ;
+	if (a1<a2){
+		result = a1;
+	}
+	else if (a1>a2){
+		result = a2;
+	}
+	else {
+		cout << "Warning: a1=a2." << endl;
+		result = a2;
+	}
+	return result;
+}
+

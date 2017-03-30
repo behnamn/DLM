@@ -44,6 +44,10 @@ double minutes(double);
 
 double Cpm2spC(double);
 
+int circ_dist(int, int, int);
+
+
+
 #endif
 
 
