@@ -8,15 +8,12 @@
 #ifndef STRAND_H_
 #define STRAND_H_
 
-#include "Headers.h"
-#include "Common.h"
+#include "Crossover.h"
 
 class Strand {
 public:
-	int id;
 	int length;
 	int n_domains; 
-	
 	
 	string seq;  
 	string reverse_comp; 

@@ -1,21 +1,20 @@
 /*
  *
- *	Edge.h
+ *	EdgeProperty.h
  * 	Author: Behnam
  *
  */
 
-#ifndef EDGE_H_
-#define EDGE_H_
+#ifndef EDGEPROPERTY_H_
+#define EDGEPROPERTY_H_
 
-#include "Headers.h"
-#include "Domain.h"
-#include "Crossover.h"
+//#include "Domain.h"
+//#include "Crossover.h"
 
 struct EdgeProperty{
 	int id;
-	pair<Domain*,bool> domain;
-	pair<Crossover*,bool> crossover;
+	//pair<Domain*,bool> domain;
+	//pair<Crossover*,bool> crossover;
 	int length;
 	double weight;
 	char type; 	

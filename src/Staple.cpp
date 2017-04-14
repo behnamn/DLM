@@ -8,13 +8,14 @@
 #include "Staple.h"
 
 //Staple Methods
-Staple::Staple (string string_) {
+Staple::Staple () {}
+Staple::Staple (string &string_) {
 	read_string(string_);
 	set_length();
 	set_reverse_comp();
 }
-void Staple::read_string(string line_){
-	vector<std::string> line; //To split the line into position and seq.
+void Staple::read_string(string& line_){
+	vector<std::string> line; //To split the line into position, seq and domains.
 	boost::split(line, line_, boost::is_any_of("\t"));	
 	if (line.size()>5) {printf ("Error:\t tab separation of staple line failed... Or more than 3 domains found on staple.\n"); exit (EXIT_FAILURE);}
 
@@ -62,57 +63,43 @@ void Staple::read_string(string line_){
 		}
 	}
 	this->set_seq(seq_to_add);
-	//Adding domain sizes.
+	
+	Domain domain;
+	//Adding temporary domains sizes.
 	vector<string> str_doms;
 	for (int i=2; i<line.size(); i++){
 		str_doms.push_back(line[i]);
-		//str_doms.insert(str_doms.begin(),line[i]);
-		//cout << line[i] << "\t";
 	}	
-	//std::reverse(str_doms.begin(),str_doms.end());
-	//cout << endl;
 	this->n_domains = str_doms.size();
-	for (vector<string>::iterator st = str_doms.begin(); st != str_doms.end(); ++st){
-		this->len_domains.push_back(stoi(*st));
-	}
-}
-void Staple::split_seqs(){
-	string dom_str;
 	int current_nuc = 0;
-	for (int d=0; d < this->n_domains; d++){
-		dom_str = this->seq.substr(current_nuc,len_domains[d]);
-		this->seq_domains.push_back(dom_str);
-		current_nuc += this->len_domains[d];
-	}
-	current_nuc = 0;
-	int d;
-	for (int d2=0; d2 < this->n_domains; d2++){
-		d = this->n_domains - d2 - 1;
-		dom_str = this->reverse_comp.substr(current_nuc,len_domains[d]);
-		this->rev_seq_domains.push_back(dom_str);
-		current_nuc += this->len_domains[d];
+	for (vector<string>::iterator st = str_doms.begin(); st != str_doms.end(); ++st){
+		domain.length = stoi(*st);
+		domain.seq = this->seq.substr(current_nuc,domain.length);
+		//Took rev_comp out from original version!
+		temp_domains.push_back(domain);
+		current_nuc += domain.length;
 	}
 }
-void Staple::print_staple(){
+void Staple::print(){
 	cout << n_domains << " ";
 	cout << this->length << "\t";
-   	cout << start_helix << " " << start_nuc << "\t";
-   	cout << end_helix << " " << end_nuc << "\t"; 
-	cout << this->seq << "\t";
-	cout << reverse_comp << "\t";
+   	cout << helices.first << " " << nucs.first << "\t";
+   	cout << helices.second << " " << nucs.second << "\t"; 
+	cout << this->is_seam << "\t";
+	//cout << reverse_comp << "\t";
 	cout << "Domains:\t";
-	for (int d = 0; d < this->domains.size(); d++){
-		//cout << "(" << domain_indices[d] << ") ";
-		//cout << "(" << vertices[d].first << "->" << vertices[d].second << ") ";
-		cout << "(" << domains[d].first << "-" <<  domains[d].second << ") ";
-		cout << "(" << len_domains[d] << ")\t";
+	for (vector<Domain*>::iterator dom = domains.begin(); dom != domains.end(); ++dom){
+		//cout << "(" << (**dom).id << ") ";
+		cout << "(" << (**dom).vertices.first << "->" << (**dom).vertices.second << ") ";
+		cout << "(" << (**dom).nucs.first << "->" << (**dom).nucs.second << ") ";
+		cout << "(" << (**dom).seq.length() << ")\t";
 		//cout << "(" << seq_domains[d] << ")\t";
 	}
 	cout << "Crossovers:\t";
-	for (int c = 0; c < this->crossovers.size(); c++){
-		cout << crossovers[c].first << "->" <<  crossovers[c].second << " ";
-		//cout << cross_indices[c].first << "->" <<  cross_indices[c].second << " ";
-		//cout << "(" << len_crossovers[c] << ")\t";
+	for (vector<Crossover*>::iterator cross = crossovers.begin(); cross != crossovers.end(); ++cross){
+		//cout << "(" << (**cross).id << ") ";
+		cout << "(" << (**cross).vertices.first << "->" << (**cross).vertices.second << ") ";
+		cout << "(" << (**cross).nucs.first << "->" << (**cross).nucs.second << ") ";
 	}
 	cout << endl;
 }

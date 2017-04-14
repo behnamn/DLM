@@ -1,14 +1,12 @@
 /*
  *
- *	Vertex.h
+ *	VertexProperty.h
  * 	Author: Behnam
  *
  */
 
-#ifndef VERTEX_H_
-#define VERTEX_H_
-
-#include "Headers.h"
+#ifndef VERTEXPROPERTY_H_
+#define VERTEXPROPERTY_H_
 
 struct VertexProperty{
 	int id;

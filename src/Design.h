@@ -8,16 +8,9 @@
 #ifndef DESIGN_H_
 #define DESIGN_H_
 
-#include "Headers.h"
-#include "Common.h"
+#include "Input.h"
 #include "Staple.h"
 #include "Scaffold.h"
-#include "Input.h"
-
-
-
-
-
 
 
 class Design {
@@ -27,29 +20,32 @@ public:
 	Inputs* inputs;
 	
 	Scaffold scaffold;
-	vector<Staple*> staples;
+	vector<Staple> staples;
+	vector<Domain> domains;
+	vector<Crossover> crossovers;
+	vector<vector<int> > helices;
+	//StaplePool S; //Containing staples (which contain domians) and (temporary) domains
+	//StaplePool U;
+	//StaplePool H;
+	
 	int n_staples;
 	int n_domains; //AKA n_vertices
 	
-	void read_files();
-	void print_staples();
-	void match(Staple&);
-	void fill_staple_domains();
-	void fill_domain_indices();
-	void fill_seams();
-	void fill_crossovers();
-	void fill_lengths();
-	void fill_edges();
-	void fill_helices();
-	void REVERESE_LEN_DOMAINS();
+	void add_scaffold();
+	void add_helices();
+	void add_staples();
+	void add_domains();
+	void add_domains_to_staples();
+	void add_crossovers();
+	void fill_stack_domains();
+	//void add_domains_to_scaffold(); //StaplePool has domains
 	
-	int circ_p(size_t,int);
-	vector<int> M; //To track already matched bases.
-	bool is_not_already_found(pair<int,int>);
-
-	void fill_crossover_ids();
+	void print_staples();
 	void print_domains();
 	void print_crossovers();
+	
+	vector<int> M; //To track already matched bases.
+	/*
 
 	vector<int> domain_to_crossovers(int);
 	vector<int> vertex_to_crossovers(int);
@@ -67,6 +63,7 @@ public:
 	void fill_stack_domains();
 	void add_long_crossovers();
 	void add_ids_for_crossovers();
+	*/
 };
 
 

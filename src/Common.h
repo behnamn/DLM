@@ -46,7 +46,7 @@ double Cpm2spC(double);
 
 int circ_dist(int, int, int);
 
-
+string reverse_comp(string);
 
 #endif
 

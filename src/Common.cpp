@@ -82,3 +82,14 @@ int circ_dist(int p1, int p2, int scaffold_length){
 	return result;
 }
 
+string reverse_comp(string seq){
+	string result;
+	for (string::reverse_iterator rit=seq.rbegin(); rit!=seq.rend(); ++rit){
+		if ((*rit) == 'G') {result += 'C';}
+		else if ((*rit) == 'C') {result += 'G';}
+		else if ((*rit) == 'T') {result += 'A';}
+		else if ((*rit) == 'A') {result += 'T';}
+		else {printf ("Error:\t nucleotide type not recognised (ATCG).\n"); exit (EXIT_FAILURE);}
+	}
+	return result;
+}
