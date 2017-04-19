@@ -14,6 +14,9 @@ MyGraph::MyGraph (Design* design_){
 	add_domains();
 	num_bound_domains=0;
 	num_bound_nucs=0;
+	num_bound_H=0;
+	num_bound_U=0;
+	num_bound_S=0;
 }
 
 //Common Methods
@@ -38,6 +41,9 @@ void MyGraph::add_domains(){
 void MyGraph::bind_domain(Domain* domain){
 	g[domain->edge].weight = domain->length * l_ds * domain->length * l_ds;;
 	num_bound_domains++;
+	if(domain->staple->n_domains == 1){num_bound_H++;}
+	if(domain->staple->n_domains == 2){num_bound_U++;}
+	if(domain->staple->n_domains == 3){num_bound_S++;}
 	num_bound_nucs += domain->length;
 	//For drawing
 	g[domain->edge].type = 'd';
@@ -45,6 +51,9 @@ void MyGraph::bind_domain(Domain* domain){
 void MyGraph::unbind_domain(Domain* domain){
 	g[domain->edge].weight = domain->length * l_ss * lambda_ss;
 	num_bound_domains--;
+	if(domain->staple->n_domains == 1){num_bound_H--;}
+	if(domain->staple->n_domains == 2){num_bound_U--;}
+	if(domain->staple->n_domains == 3){num_bound_S--;}
 	num_bound_nucs -= domain->length;
 	//For drawing
 	g[domain->edge].type = 's';

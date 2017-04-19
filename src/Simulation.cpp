@@ -141,8 +141,8 @@ void Local::fill_transitions(){
 }
 void Local::run() {
 	//clock_t t0;
-	clock_t t1, t2;
-	double time_per_step, total_time;
+	//clock_t t1, t2;
+	//double time_per_step, total_time;
 	//t0 = clock();
 	ofstream occupancy_file;
 	occupancy_file.open(inputs->occupancy_file_name);
@@ -154,7 +154,7 @@ void Local::run() {
 	variate_generator<base_generator_type&, uniform_real<> > uni(generator, uni_dist);
 	ramp->set_time(0.);
 	while (ramp->current_t < ramp->t_max){
-		t1 = clock();
+		//t1 = clock();
 		T_now = ramp->get_T();
 		fill_transitions();
 		r1 = uni(); r2 = uni();
@@ -192,16 +192,19 @@ void Local::run() {
 		occupancy_file << " ]\t";
 		occupancy_file << next->domain->id << "\t";
 		occupancy_file << next->crossover.second << "\t";
+		occupancy_file << G->num_bound_H << "\t";
+		occupancy_file << G->num_bound_U << "\t";
+		occupancy_file << G->num_bound_S << "\t";
 		occupancy_file << G->num_bound_domains << "\t";
 		occupancy_file << G->num_bound_nucs << "\t";
 
 		next->apply(G);
 		ramp->move_time(tau); 
 		T_past = T_now;
-		t2 = clock();
-		time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
+		//t2 = clock();
+		//time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
 		//total_time = (t2-t0) / (double) CLOCKS_PER_SEC;
-		occupancy_file << time_per_step << "\t";
+		//occupancy_file << time_per_step << "\t";
 	    occupancy_file << "\n";
 	}
 	occupancy_file.close();

@@ -77,6 +77,9 @@ public:
 
 	int num_bound_domains;
 	int num_bound_nucs;
+	int num_bound_H;
+	int num_bound_U;
+	int num_bound_S;
 
 	void print_edges();
 	void write_gv(string);
