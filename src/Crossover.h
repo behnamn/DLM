@@ -20,13 +20,20 @@ public:
 	Staple* staple;
 	bool is_seam;
 	bool is_long;
-	bool is_53; /*On staple (not scaffold)
-				  Actually on scaffold (not staple) 
-				  Always 3->5 on staple
-				  */
+	bool is_53; 
+	/*
+	 * On staple (not scaffold)
+	 * Actually on scaffold (not staple) 
+	 * Always 3->5 on staple
+	 */
 	pair<int,int> helices;
-	char type;  //i: inside, o: outside
+	char type;
+	/*
+	 * i: inside 
+	 * o: outside
+	 */
 	
+	//Not set
 	pair<Edge_desc,bool> edge;
 };
 

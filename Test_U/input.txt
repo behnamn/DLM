@@ -1,0 +1,40 @@
+###################################
+#####  Simulation Parameters  #####
+###################################
+
+gamma = 2.5
+n_param = 2.0
+
+concentration = 20.
+
+seq_dependence = yes
+
+max_temp = 100.
+min_temp = 40. 
+cool_rate = 1.
+const_T_interval = 30.
+anneal = yes
+melt = no
+n_cycles = 1
+
+seed = 1
+
+staple_species = 1 2
+
+###################################
+#####       Input Files       #####
+###################################
+
+scaffold_file = Scaffold.txt
+domain_file = U_Lengths.txt
+staple_file = U_Staples.txt
+
+
+################################### 
+#####       Output Files      #####
+###################################
+
+trajectory_file = trajectory.dat
+print_state_interval = 100000 
+
+occupancy_file = occupancy.dat

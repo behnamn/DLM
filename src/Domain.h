@@ -22,12 +22,13 @@ public:
 	vector<Domain*> cross_domains; //no need for this
 	vector<Crossover*> crossovers;
 	vector<Domain*> stack_domains;
-	Staple* staple; //the index of the staple.
+	Staple* staple; 
 	bool is_middle;
-	int s_index; //the index in the vector of domains of the staple.
+	int s_index; 
 	bool is_seam;
 	int helix;
 	bool is_edge;
+	//int* state;
 	
 	int length;
 	string seq;

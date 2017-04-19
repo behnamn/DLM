@@ -103,4 +103,20 @@ void Staple::print(){
 	}
 	cout << endl;
 }
+pair<Crossover*,bool> Staple::dp2cross(Domain* d1, Domain* d2){
+	pair<Crossover*,bool> result;
+	result.second = false;
+	for (auto c1 = d1->crossovers.begin(); c1!= d1->crossovers.end(); ++c1){
+		for (auto c2 = d2->crossovers.begin(); c2!= d2->crossovers.end(); ++c2){
+			if((*c1)->id == (*c2)->id){
+			//if(c1 == c2){
+				result.second = true;
+				result.first = *(c1);
+				break;
+			}
+		}
+	}
+	return result;
+}
+		
 

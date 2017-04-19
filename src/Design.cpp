@@ -7,7 +7,7 @@
 
 #include "Design.h"
 
-//Design Methods
+//Constructors
 Design::Design(){}
 Design::Design(Inputs* inputs_){
 	this->inputs = inputs_;
@@ -18,8 +18,11 @@ Design::Design(Inputs* inputs_){
 	add_domains_to_staples();
 	add_crossovers();
 	fill_stack_domains();
+	initialise_states();
+	
 }
 
+//Initialisers
 void Design::add_scaffold(){
 	//Just for folding.
 	this->scaffold = Scaffold(inputs->scaffold_file_name); 
@@ -361,7 +364,40 @@ void Design::fill_stack_domains(){
 		}
 	}
 }
+void Design::initialise_states(){
+	for (auto it = staples.begin(); it!= staples.end(); ++it){
+		for (auto dom = it->domains.begin(); dom != it->domains.end(); ++dom){
+			it->state.push_back(0);
+		}
+	}
+	/*
+	for (auto it = staples.begin(); it!= staples.end(); ++it){
+		for (int i = 0; i < it->domains.size(); i++){
+			it->domains[i]->state = &(it->state[i]);
+		}
+	}
+	*/
+}
 
+
+//Converters
+pair<bool,Crossover*> Design::dp2cross(Domain* d1, Domain* d2){
+	pair<bool,Crossover*> result;
+	result.first = false;
+	for (auto c1 = d1->crossovers.begin(); c1!= d1->crossovers.end(); ++c1){
+		for (auto c2 = d2->crossovers.begin(); c2!= d2->crossovers.end(); ++c2){
+			//if((*c1)->id == (*c2)->id){
+			if(c1 == c2){
+				result.first = true;
+				result.second = *(c1);
+				break;
+			}
+		}
+	}
+	return result;
+}
+
+//Printers
 void Design::print_staples(){
 	cout << "\n------- Printing Staples -------\n\n"; 
 	for (vector<Staple>::iterator s = staples.begin(); s != staples.end(); ++s){
@@ -411,6 +447,7 @@ void Design::print_crossovers(){
 		cout << endl;
 	}
 }
+
 
 
 

@@ -8,21 +8,10 @@
 #ifndef MYGRAPH_H_
 #define MYGRAPH_H_
 
-#include "Headers.h"
-#include "Common.h"
 #include "Constants.h"
+#include "Graph.h"
+#include "Graph.h"
 #include "Design.h"
-
-template <class Graph> void print(Graph& g) {
-	typename Graph::vertex_iterator i, end;
-	typename Graph::out_edge_iterator ei, edge_end;
-	for(boost::tie(i,end) = vertices(g); i != end; ++i) {
-		cout << *i << " --> ";
-		for (boost::tie(ei,edge_end) = out_edges(*i, g); ei != edge_end; ++ei)
-		    cout << target(*ei, g) << "  ";
-		cout << endl;
-	}
-};
 
 struct face_counter : public planar_face_traversal_visitor {
 	face_counter() : count(0) {}
@@ -49,66 +38,51 @@ struct edge_output_visitor : public output_visitor {
 };
 
 class Faces_visitor : public planar_face_traversal_visitor {
-	public:
-		Embedding faces;
-		int i = 0;
-		void begin_face() { 
-			Path f;
-			faces.push_back(f);
-		}
-		void end_face() { 
-			i++;
-		}
-		template <typename Edge> 
-		void next_edge(Edge e) 
-		{ 
-			faces[i].push_back(e);
-		}
+public:
+	Embedding faces;
+	int i = 0;
+	void begin_face() { 
+		Path f;
+		faces.push_back(f);
+	}
+	void end_face() { 
+		i++;
+	}
+	template <typename Edge> 
+	void next_edge(Edge e) 
+	{ 
+		faces[i].push_back(e);
+	}
 };
 
 class MyGraph{
-	public:
-		MyGraph (Design);
-		Design design;
-		Graph g;
-		Embedding emb;
-		Embedding faces;
-		void add_vertices();
-		void add_domains();
-		Edge_desc id_to_edge(int);
-		void reset_vertex_index(); 
-		void reset_edge_index(); 
-		void add_crossover_v(pair<int,int> );
-		void add_crossover_d(pair<int,int> );
-		void add_crossover(int);
-		void remove_crossover(int);
-		void add_all_crossovers();
-		void bind_all_domains(); 
-		void set_edge_weights();	
-		void print_edges();
-		void write_gv(string);
-		void write_gv_circle(string);
-		double total_weight(int, int); 
-		void make_transition(int, bool, vector<int> &); 
-		void make_transition(int, bool); 
-		void update_embedding(); 
-		void print_embedding(); 
-		int get_bound_dom_count();
-		int get_bound_nuc_count();
-		void get_bound_dom_counts(vector<int> &);
-		//void test_transition(int e, bool add);
-		void update_faces(); 
-		Path select_face(int); 
-		vector<Path> select_all_faces(int); 
-		void get_affected(int, vector<int> &);
-		void reset_all_states();
-		void set_state(int);
-		void set_changes(int);
-		void reduce_state(vector<int>&);
-		void reduce_state2(vector<int>&);
-		void make_transition(int,int); 
-		int find_interacting_domain(int,int);
-		pair<Edge_desc,bool> check_cross(int,int); //between domains!
+public:
+	MyGraph (Design*);
+	Design* design;
+	Graph g;
+	Embedding emb;
+	Embedding faces;
+	void add_vertices();
+	void add_domains();
+	void reset_vertex_index(); 
+	void reset_edge_index(); 
+	double total_weight(int, int); 
+	void update_embedding(); 
+
+	void bind_domain(Domain*);
+	void unbind_domain(Domain*);
+	
+	void add_crossover(Crossover*);
+	void remove_crossover(Crossover*);
+
+	int num_bound_domains;
+	int num_bound_nucs;
+
+	void print_edges();
+	void write_gv(string);
+	void write_gv_circle(string);
+	void print_embedding(); 
+	//Edge_desc id_to_edge(int);
 };
 
 
