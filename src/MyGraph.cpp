@@ -39,7 +39,7 @@ void MyGraph::add_domains(){
 	}
 }
 void MyGraph::bind_domain(Domain* domain){
-	g[domain->edge].weight = domain->length * l_ds * domain->length * l_ds;;
+	g[domain->edge].weight = domain->length * domain->length * ds_hack;
 	num_bound_domains++;
 	if(domain->staple->n_domains == 1){num_bound_H++;}
 	if(domain->staple->n_domains == 2){num_bound_U++;}
@@ -49,7 +49,7 @@ void MyGraph::bind_domain(Domain* domain){
 	g[domain->edge].type = 'd';
 }
 void MyGraph::unbind_domain(Domain* domain){
-	g[domain->edge].weight = domain->length * l_ss * lambda_ss;
+	g[domain->edge].weight = domain->length * ss_hack;
 	num_bound_domains--;
 	if(domain->staple->n_domains == 1){num_bound_H--;}
 	if(domain->staple->n_domains == 2){num_bound_U--;}
@@ -111,7 +111,7 @@ void MyGraph::add_crossover(Crossover* cross){
    	EP.crossover = make_pair(cross,true);
 	EP.type = cross->type;
 	EP.length = default_crossover_size;
-	EP.weight = lambda_ss * lambda_ss;
+	EP.weight = cs_hack;
 	cross->edge = add_edge(cross->vertices.first, cross->vertices.second, EP, g);
 	reset_edge_index();
 }

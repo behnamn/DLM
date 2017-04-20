@@ -32,6 +32,8 @@ public:
 	
 	int length;
 	string seq;
+	double dH;
+	double dS;
 	
 	Edge_desc edge; //pair<Edge_desc, bool> edgePair = edge(u, v, g);
 };

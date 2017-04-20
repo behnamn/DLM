@@ -649,13 +649,13 @@ void MyMaps::fill_transition_map(){
 
 //Transition
 Transition::Transition(){}
-Transition::Transition(Staple* staple_, Domain* domain_, int& target, int& pos_cross, MyMaps* mymaps_){
+Transition::Transition(Staple* staple_, Domain* domain_, int target, int pos_cross, MyMaps* mymaps_){
 	this->staple = staple_;
 	this->domain = domain_;
 	this->maps = mymaps_;
 	initialise(target, pos_cross);
 }
-void Transition::initialise(int& target, int& pos_cross){
+void Transition::initialise(int target, int pos_cross){
 	final_state = staple->state;
 	final_state[domain->s_index] = target;
 	if (target > 0) bind = true;

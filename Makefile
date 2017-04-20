@@ -36,7 +36,7 @@ $(ODIR)TempRamp.o: $(SDIR)TempRamp.cpp $(SDIR)TempRamp.h $(ODIR)Common.o $(DEPS)
 $(ODIR)MyGraph.o: $(SDIR)MyGraph.cpp $(SDIR)MyGraph.h $(ODIR)Common.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)Design.o $(DEPS)
 	$(CC) $(CFLAGS) -c $(SDIR)MyGraph.cpp -o $(ODIR)MyGraph.o
 
-$(ODIR)Design.o: $(SDIR)Design.cpp $(SDIR)Design.h $(ODIR)Common.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(DEPS)
+$(ODIR)Design.o: $(SDIR)Design.cpp $(SDIR)Design.h $(ODIR)Common.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)Constants.o $(DEPS)
 	$(CC) $(CFLAGS) -c $(SDIR)Design.cpp -o $(ODIR)Design.o
 
 $(ODIR)Scaffold.o: $(SDIR)Scaffold.cpp $(SDIR)Scaffold.h $(ODIR)Strand.o $(ODIR)Common.o $(DEPS)

@@ -8,6 +8,7 @@
 #ifndef DESIGN_H_
 #define DESIGN_H_
 
+#include "Constants.h" //For dH,dS
 #include "Input.h"
 #include "Staple.h"
 #include "Scaffold.h"

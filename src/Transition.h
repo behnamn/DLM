@@ -46,8 +46,8 @@ public:
 class Transition {
 public:
 	Transition();
-	Transition(Staple* , Domain*, int&, int&, MyMaps*);
-	void initialise(int&, int&);
+	Transition(Staple* , Domain*, int, int, MyMaps*);
+	void initialise(int, int);
 
 	MyMaps* maps;
 	Staple* staple;

@@ -9,37 +9,16 @@
 
 //General Simulation Methods
 double Simulation::dG_duplex(Domain* domain) {
-	double result;
-	double dH = 0.;
-	double dS = 0.;
 	double terminal = 0;
 	double T = ramp->get_T();
-	string sequence = domain->seq;
-
-	if (sequence[0] == 'A' || sequence[0] == 'T'){terminal += dH_termAT - T*dS_termAT;}
-	if (sequence[sequence.size()-1] == 'A' || sequence[sequence.size()-1] == 'T'){terminal += dH_termAT - T*dS_termAT;}
-
-	string sub;
-	for (int i=0; i<sequence.size()-1; i++){
-		sub.clear();
-		sub += sequence[i];
-		sub += sequence[i+1];
-		if (sub == "AA" || sub == "TT") { dH+=dH_AA; dS+=dS_AA; }
-		else if (sub == "CA" || sub == "TG") { dH+=dH_CA; dS+=dS_CA; }
-		else if (sub == "GT" || sub == "AC") { dH+=dH_GT; dS+=dS_GT; }
-		else if (sub == "CT" || sub == "AG") { dH+=dH_CT; dS+=dS_CT; }
-		else if (sub == "GA" || sub == "TC") { dH+=dH_GA; dS+=dS_GA; }
-		else if (sub == "GG" || sub == "CC") { dH+=dH_GG; dS+=dS_GG; }
-		else if (sub == "AT") { dH+=dH_AT; dS+=dS_AT; }
-		else if (sub == "TA") { dH+=dH_TA; dS+=dS_TA; }
-		else if (sub == "CG") { dH+=dH_CG; dS+=dS_CG; }
-		else if (sub == "GC") { dH+=dH_GC; dS+=dS_GC; }
-		else {printf ("Error! sequence not in nn database. \n"); exit (EXIT_FAILURE);}
+	if (domain->seq[0] == 'A' || domain->seq[0] == 'T'){
+		terminal += dH_termAT - T*dS_termAT;
 	}
-	
-	double dS_salt = ((domain->length - 1) * 0.368 * salt_per_phosphate) / 1000.; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
-	result = dH_init - T*dS_init + dH - T*dS + terminal - T * dS_salt;
-	return result;
+	if (domain->seq[domain->length-1] == 'A' || domain->seq[domain->length-1] == 'T'){
+		terminal += dH_termAT - T*dS_termAT;
+	}
+	double dS_salt = (domain->length - 1) * salt_per_phosphate_hack; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
+	return dH_init - T*dS_init + domain->dH - T*domain->dS + terminal - T*dS_salt;
 }
 double Simulation::dG_duplex_average(Domain* domain) {
 	double result;
@@ -50,7 +29,7 @@ double Simulation::dG_duplex_average(Domain* domain) {
 	//double dS_salt = (domain.length-1) * 0.368 * log( 0.5*constants->conc_Tris + 3.3*sqrt(constants->conc_Mg) );
 	//double dS_salt = (domain.length-1) * 0.368 * 3.45528339927;  //using 12.5 and 40.
 	//double dS_salt = (domain.length - 1) * 0.368 * -0.944; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
-	double dS_salt = ((domain->length - 1) * 0.368 * salt_per_phosphate) / 1000.; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
+	double dS_salt = (domain->length - 1) * salt_per_phosphate_hack; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
 	//double dS_salt = 0.;
 	result = dH_init - T*dS_init + dH - T*dS + terminal - T * dS_salt;
 	return result;
@@ -141,9 +120,10 @@ void Local::fill_transitions(){
 }
 void Local::run() {
 	//clock_t t0;
-	//clock_t t1, t2;
-	//double time_per_step, total_time;
+   	//double total_time;
 	//t0 = clock();
+	clock_t t1, t2;
+	double time_per_step;
 	ofstream occupancy_file;
 	occupancy_file.open(inputs->occupancy_file_name);
 	Transition* next;
@@ -154,7 +134,7 @@ void Local::run() {
 	variate_generator<base_generator_type&, uniform_real<> > uni(generator, uni_dist);
 	ramp->set_time(0.);
 	while (ramp->current_t < ramp->t_max){
-		//t1 = clock();
+		t1 = clock();
 		T_now = ramp->get_T();
 		fill_transitions();
 		r1 = uni(); r2 = uni();
@@ -201,10 +181,10 @@ void Local::run() {
 		next->apply(G);
 		ramp->move_time(tau); 
 		T_past = T_now;
-		//t2 = clock();
-		//time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
+		t2 = clock();
+		time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
 		//total_time = (t2-t0) / (double) CLOCKS_PER_SEC;
-		//occupancy_file << time_per_step << "\t";
+		occupancy_file << time_per_step << "\t";
 	    occupancy_file << "\n";
 	}
 	occupancy_file.close();

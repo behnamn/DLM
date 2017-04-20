@@ -70,7 +70,12 @@ void Design::add_helices(){
 		helices[row].push_back(i);
 	}
 }
-void Design::add_staples(){ //Adds n_staples and staples(helices, nucs, id, is_seam, is_edge, temp_domains(sizes & seqs))
+void Design::add_staples(){
+	/*
+	 * Adds n_staples to Design
+	 * Adds staples with:
+	 * 	helices, nucs, id, is_seam, is_edge, temp_domains(sizes & seqs))
+	 */
 	Staple staple;
 	string line;
 	ifstream myfile (inputs->staple_file_name);
@@ -107,7 +112,13 @@ void Design::add_staples(){ //Adds n_staples and staples(helices, nucs, id, is_s
 		}
 	}
 }
-void Design::add_domains(){ //Adds n_domains, domain sizes, ids, nucs, seqs, vertices, helix.
+void Design::add_domains(){ 
+	/*
+	 * Adds to Design:
+	 * 	n_domains, domains
+	 * Adds to each domain:
+	 * 	domain sizes, ids, nucs, seqs, vertices, helix, dH, dS.
+	 */
 	string line;
 	int i = 0;
 	Domain domain;
@@ -159,6 +170,34 @@ void Design::add_domains(){ //Adds n_domains, domain sizes, ids, nucs, seqs, ver
 		if (h_first == h_second){dom->helix = h_first;}
 		else {cout << "WARNING: domain's vertices are on different helices!\n";}
 	}
+	double dH, dS;
+	for (vector<Domain>::iterator dom = domains.begin(); dom!=domains.end(); ++dom){
+		dH = 0.;
+		dS = 0.;
+		string sub;
+		for (int i=0; i<dom->length-1; i++){
+			sub.clear();
+			sub += dom->seq[i];
+			sub += dom->seq[i+1];
+			if (sub == "AA" || sub == "TT") { dH+=dH_AA; dS+=dS_AA; }
+			else if (sub == "CA" || sub == "TG") { dH+=dH_CA; dS+=dS_CA; }
+			else if (sub == "GT" || sub == "AC") { dH+=dH_GT; dS+=dS_GT; }
+			else if (sub == "CT" || sub == "AG") { dH+=dH_CT; dS+=dS_CT; }
+			else if (sub == "GA" || sub == "TC") { dH+=dH_GA; dS+=dS_GA; }
+			else if (sub == "GG" || sub == "CC") { dH+=dH_GG; dS+=dS_GG; }
+			else if (sub == "AT") { dH+=dH_AT; dS+=dS_AT; }
+			else if (sub == "TA") { dH+=dH_TA; dS+=dS_TA; }
+			else if (sub == "CG") { dH+=dH_CG; dS+=dS_CG; }
+			else if (sub == "GC") { dH+=dH_GC; dS+=dS_GC; }
+			else {
+				printf ("Error! dom->seq not in nn database. \n"); 
+				exit (EXIT_FAILURE);
+			}
+		}
+		dom->dH = dH;
+		dom->dS = dS;
+	}
+
 }	
 void Design::add_domains_to_staples(){ //Adds pointers. Fills s_index, is_middle, is_seam, is_edge.
 	string rev_comp;
