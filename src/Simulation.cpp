@@ -93,7 +93,8 @@ void Local::fill_transitions(){
 				}
 				for (auto stack = tr->domain->stack_domains.begin(); stack != tr->domain->stack_domains.end(); ++stack){
 					//if (*((*stack)->state) > 0){
-					if ( tr->staple->state[((*stack)->s_index)] > 0){
+					//if ( ((*stack)->staple)->state[((*stack)->s_index)] > 0){
+					if( (design->domains[(*stack)->id]).staple->state[(*stack)->s_index] > 0){
 						dG += dG_stack();
 					}
 				}
@@ -183,16 +184,19 @@ void Local::run() {
 			occupancy_file << (*it);
 			if ( it - next->final_state.begin() == next->domain->s_index)
 				occupancy_file << ")";
-		}	
+		}
 		occupancy_file << " ]\t";
 		occupancy_file << next->domain->id << "\t";
+		//occupancy_file << next->rate << "\t";
+		//occupancy_file << total_rate << "\t";
+		//occupancy_file << next->domain->length << "\t";
+
 		occupancy_file << next->crossover.second << "\t";
 		occupancy_file << G->num_bound_H << "\t";
 		occupancy_file << G->num_bound_U << "\t";
 		occupancy_file << G->num_bound_S << "\t";
 		occupancy_file << G->num_bound_domains << "\t";
 		occupancy_file << G->num_bound_nucs << "\t";
-
 		next->apply(G);
 		ramp->move_time(tau); 
 		T_past = T_now;

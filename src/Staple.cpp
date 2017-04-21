@@ -83,6 +83,7 @@ void Staple::read_string(string& line_){
 void Staple::print(){
 	cout << n_domains << " ";
 	cout << this->length << "\t";
+	cout << this->seq << "\t";
    	cout << helices.first << " " << nucs.first << "\t";
    	cout << helices.second << " " << nucs.second << "\t"; 
 	cout << this->is_seam << "\t";

@@ -452,11 +452,13 @@ void Design::print_domains(){
 		cout << "(" << dom->vertices.first << "->" << dom->vertices.second << ")\t";
 		cout << dom->length << "\t";
 		//cout << "(" << dom->nucs.first << "->" << dom->nucs.second << ")\t";
-		cout << "seam? " << dom->is_seam << "\t";
-		cout << "edge? " << dom->is_edge << "\t";
-		cout << "staple " << dom->staple->id << "\t";
-		cout << "s_index " << dom->s_index << "\t";
-		cout << "helix " << dom->helix << "\t";
+		//cout << "seam? " << dom->is_seam << "\t";
+		//cout << "edge? " << dom->is_edge << "\t";
+		cout << dom->staple->id << "\t";
+		cout << dom->seq << "\t";
+
+		//cout << "s_index " << dom->s_index << "\t";
+		//cout << "helix " << dom->helix << "\t";
 		cout << "Crossover_ids: ";
 		for (vector<CR>::iterator cross=dom->crossovers.begin(); cross!=dom->crossovers.end(); ++cross){
 			cout << (*cross)->id << "\t"; 

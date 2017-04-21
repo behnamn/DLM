@@ -635,13 +635,16 @@ void MyMaps::fill_transition_map(){
 	//Print
 	/*
 	for (auto it = transition_map.begin(); it!=transition_map.end(); ++it){
+		cout << "{";
 		for(auto s = it->first.first.begin(); s!=it->first.first.end(); ++s){
+			if (s - it->first.first.begin() == it->first.second) cout <<"(";
 			cout << *s;
+			if (s - it->first.first.begin() == it->first.second) cout <<")";
 		}
-		cout << "\t";
-		cout << it->first.second << ":\t";
+		cout << "}\t";
+		//cout << it->first.second << ":\t";
 		for(auto s = it->second.begin(); s!=it->second.end(); ++s){
-			cout << s->first << " " << s->second << "\t";
+			cout << "[" << s->first << ", " << s->second << "]\t";
 		}
 		cout << "\n";
 	}

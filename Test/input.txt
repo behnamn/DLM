@@ -7,7 +7,7 @@ n_param = 2.0
 
 concentration = 20.
 
-seq_dependence = yes
+seq_dependence = no
 
 max_temp = 100.
 min_temp = 40. 
