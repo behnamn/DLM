@@ -26,8 +26,8 @@ staple_species = 1 2 3
 ###################################
 
 scaffold_file = Scaffold.txt
-domain_file = S_Lengths.txt
-staple_file = S_Staples.txt
+domain_file = U_Lengths.txt
+staple_file = U_Staples.txt
 
 
 ################################### 

@@ -42,6 +42,8 @@
 #include <boost/fusion/container/generation/make_vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 
+#include <boost/graph/dijkstra_shortest_paths_no_color_map.hpp>
+
 //For parse_input
 #include <cstring>
 #include <ctype.h>

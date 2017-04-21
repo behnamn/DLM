@@ -35,20 +35,15 @@ double Simulation::dG_duplex_average(DOM domain) {
 	return result;
 }
 double Simulation::dG_stack() {
-	double result;
 	double dG_average = dH_average - ramp->get_T()*dS_average; //Not sure if this is what he means in paper.
-	result = constants->n_parameter * dG_average;
-	//cout << result << endl;
-	return result;
+	return constants->n_parameter * dG_average;
 }	
 
 //Local Model Methods
 double Local::dG_shape(CR crossover) {
-	double result;
 	double E;
-	E = lambda_ss * lambda_ss + G->total_weight(crossover->vertices.first, crossover->vertices.second);
-	result = -(gas_constant * ramp->get_T()) * constants->gamma_parameter * log(constants->C_parameter / E);
-	return result;
+	E = cs_hack + G->total_weight(crossover);
+	return -(gas_constant * ramp->get_T()) * constants->gamma_parameter * log(constants->C_parameter / E);
 }
 Local::Local(Constants *constants_, Design* design_, MyGraph *G_, TempRamp *ramp_, Inputs *inputs_){
 	ramp = ramp_;
@@ -59,18 +54,12 @@ Local::Local(Constants *constants_, Design* design_, MyGraph *G_, TempRamp *ramp
 	maps = MyMaps();
 }
 void Local::fill_transitions(){
-	/*
-	clock_t t1, t2, t3;
-	double fill_tr_time;
-	double calc_rate_time;
-	t1 = clock();
-	t2 = clock();
-	fill_tr_time = (t2-t1) / (double) CLOCKS_PER_SEC;
-	calc_rate_time = (t3-t2) / (double) CLOCKS_PER_SEC;
-	cout << fill_tr_time << "\t" << calc_rate_time << "\n";
-	*/
+	//clock_t t1, t2, t3;
+	//double fill_tr_time;
+	//double calc_rate_time;
 	transitions.clear();
 	total_rate = 0.;
+	//t1 = clock();
 	vector<pair<int,int> > dummy;
 	for (vector<Staple>::iterator st = design->staples.begin(); st!=design->staples.end(); ++st){
 		for (vector<DOM>::iterator dom = st->domains.begin(); dom!=st->domains.end(); ++dom){
@@ -80,6 +69,7 @@ void Local::fill_transitions(){
 			}
 		}
 	}
+	//t2 = clock();
 	double dG;
 	double RT = gas_constant * ramp->get_T();
 	for (auto tr = transitions.begin(); tr!=transitions.end(); ++tr){
@@ -87,14 +77,14 @@ void Local::fill_transitions(){
 		if (tr->bind){
 			if(tr->crossover.second == true){
 				dG += dG_shape(tr->crossover.first);
-				tr->rate = pow(10,3) * k_plus * exp( -dG / RT ); 
+				tr->rate = 1000. * k_plus * exp( -dG / RT ); 
 			}
 			else{
 				tr->rate = k_plus * constants->conc_staple; 
 			}
 		}
 		else{
-			if(tr->crossover.second == true){
+			//if(tr->crossover.second == true){
 				if (inputs->seq_dependence){
 					dG += dG_duplex(tr->domain);
 				}
@@ -107,7 +97,8 @@ void Local::fill_transitions(){
 						dG += dG_stack();
 					}
 				}
-				tr->rate = pow(10,3) * k_plus * exp( dG / RT );
+				tr->rate = 1000. * k_plus * exp( dG / RT );
+			/*
 			}
 			else{ //same in local model.
 				if (inputs->seq_dependence){
@@ -122,11 +113,16 @@ void Local::fill_transitions(){
 						dG += dG_stack();
 					}
 				}
-				tr->rate = pow(10,3) * k_plus * exp( dG / RT );
+				tr->rate = 1000. * k_plus * exp( dG / RT );
 			}
+			*/
 		}
 		total_rate += tr->rate;
 	}
+	//t3 = clock();
+	//fill_tr_time = (t2-t1) / (double) CLOCKS_PER_SEC;
+	//calc_rate_time = (t3-t2) / (double) CLOCKS_PER_SEC;
+	//cout << fill_tr_time << "\t" << calc_rate_time << "\n";
 }
 void Local::run() {
 	//clock_t t0;

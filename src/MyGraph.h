@@ -66,7 +66,7 @@ public:
 	void add_domains();
 	void reset_vertex_index(); 
 	void reset_edge_index(); 
-	double total_weight(int, int); 
+	double total_weight(CR); 
 	void update_embedding(); 
 
 	void bind_domain(DOM);
@@ -86,8 +86,9 @@ public:
 	void write_gv_circle(string);
 	void print_embedding(); 
 	//Edge_desc id_to_edge(int);
+	
+	void complete();
 };
-
 
 #endif
 

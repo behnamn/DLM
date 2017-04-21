@@ -23,10 +23,14 @@ int main(int argc, char * argv[]) {
 	MyGraph *G = new MyGraph(design);
 	//G->print_edges();
 
+	MyGraph *G_full = new MyGraph(design);
+	G_full->complete();
+	G_full->write_gv("Graph");
+	
 	if (inputs->anneal){
 		Anneal *anneal = new Anneal(inputs);
 		Local local_a = Local(constants, design, G, anneal, inputs);
-		local_a.run();
+		//local_a.run();
 	}
 	else if (inputs->melt){
 		//local_m.run();

@@ -34,7 +34,7 @@ void MyGraph::add_domains(){
 		EP.id = distance(design->domains.begin(), d);
 		EP.domain = make_pair(d,true);
 		EP.weight = d->length * l_ss * lambda_ss;
-		EP.length = d->length;
+		EP.length = d->length / 4;
 		d->edge = add_edge(d->vertices.first, d->vertices.second, EP, g).first;
 	}
 }
@@ -82,26 +82,26 @@ void MyGraph::update_embedding() {
 	else
 		cout << "input graph is not planar." << endl;
 }
-double MyGraph::total_weight(int a, int b) {
+double MyGraph::total_weight(CR crossover) {
 	typedef double Weight;
 	typedef property_map <Graph,vertex_index_t>::type IndexMap;
-	typedef iterator_property_map <Vertex_desc*,IndexMap,Vertex_desc,Vertex_desc&> PredecessorMap;
 	typedef iterator_property_map <Weight*,IndexMap,Weight,Weight&> DistanceMap;
-	vector<Vertex_desc> predecessors(num_vertices(g)); // To store parents
-	vector<Weight> distances(num_vertices(g)); // To store distances
-	IndexMap indexMap = get(vertex_index, g);
-	PredecessorMap predecessorMap(&predecessors[0], indexMap);
-	DistanceMap distanceMap(&distances[0], indexMap);
-	dijkstra_shortest_paths(g, a, weight_map(get(&EdgeProperty::weight, g)).distance_map(distanceMap).predecessor_map(predecessorMap));
-	//typedef vector<Edge_desc> Path;
-	Path path;
-	Vertex_desc v=b; // We want to start at the destination and work our way back to the source
-	for(Vertex_desc u=predecessorMap[v]; u!=v; v=u, u=predecessorMap[v]) {
-		pair<Edge_desc, bool> edgePair = edge(u, v, g);
-		Edge_desc edge = edgePair.first;
-		path.push_back(edge);
+	vector<Weight> distances(design->n_domains); // To store distances
+	DistanceMap distanceMap(&distances[0], get(vertex_index, g));
+	dijkstra_shortest_paths_no_color_map(g, crossover->vertices.first, 
+			weight_map(get(&EdgeProperty::weight, g)).
+			distance_map(distanceMap));
+	return distanceMap[crossover->vertices.second];
+}
+
+//Make full graph
+void MyGraph::complete(){
+	for (auto dom = design->domains.begin(); dom!=design->domains.end(); ++dom){
+		bind_domain(dom);
 	}
-	return distanceMap[b];
+	for (auto cr = design->crossovers.begin(); cr!=design->crossovers.end(); ++cr){
+		add_crossover(cr);
+	}
 }
 
 //Transition Methods
@@ -204,13 +204,14 @@ void MyGraph::write_gv(string filename) {
 		else if(g[*ei].type == 'o'){g[*ei].colour = "blue"; g[*ei].thickness = "2.0";}
 		else if(g[*ei].type == 'm'){g[*ei].colour = "red"; g[*ei].thickness = "2.0";}
 		else if(g[*ei].type == 'l'){g[*ei].colour = "purple"; g[*ei].thickness = "2.0";}
-		else {cout << "no domain type found for edge" << endl;}
+		//else {cout << "no domain type found for edge" << endl;}
+		else {g[*ei].colour = "red"; g[*ei].thickness = "2.0";}
 	}
 	boost::dynamic_properties dp;
 	dp.property("len", get(&EdgeProperty::length, g));
 	//dp.property("weight", get(&EdgeProperty::weight, g));
 	//dp.property("label", get(&EdgeProperty::weight, g));
-	dp.property("type", get(&EdgeProperty::type, g));
+	//dp.property("type", get(&EdgeProperty::type, g));
 	dp.property("color", get(&EdgeProperty::colour, g));
 	dp.property("penwidth", get(&EdgeProperty::thickness, g));
 	//dp.property("label", get(&VertexProperty::name, g));
