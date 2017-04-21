@@ -38,7 +38,7 @@ void MyGraph::add_domains(){
 		d->edge = add_edge(d->vertices.first, d->vertices.second, EP, g).first;
 	}
 }
-void MyGraph::bind_domain(DOM domain){
+void MyGraph::bind_domain(const DOM domain){
 	g[domain->edge].weight = domain->length * domain->length * ds_hack;
 	num_bound_domains++;
 	if(domain->staple->n_domains == 1){num_bound_H++;}
@@ -48,7 +48,7 @@ void MyGraph::bind_domain(DOM domain){
 	//For drawing
 	g[domain->edge].type = 'd';
 }
-void MyGraph::unbind_domain(DOM domain){
+void MyGraph::unbind_domain(const DOM domain){
 	g[domain->edge].weight = domain->length * ss_hack;
 	num_bound_domains--;
 	if(domain->staple->n_domains == 1){num_bound_H--;}
@@ -82,7 +82,7 @@ void MyGraph::update_embedding() {
 	else
 		cout << "input graph is not planar." << endl;
 }
-double MyGraph::total_weight(CR crossover) {
+double MyGraph::total_weight(const CR crossover) {
 	typedef double Weight;
 	typedef property_map <Graph,vertex_index_t>::type IndexMap;
 	typedef iterator_property_map <Weight*,IndexMap,Weight,Weight&> DistanceMap;
@@ -141,7 +141,7 @@ void MyGraph::print_edges(){
 		cout << "\n";
 	}	
 }
-void MyGraph::write_gv_circle(string filename) {
+void MyGraph::write_gv_circle(const string& filename) {
 	double radius = 25;
 	Vertex_iter vi,vf;
 	int n_vertices = design->n_domains;
@@ -194,7 +194,7 @@ void MyGraph::write_gv_circle(string filename) {
 	write_graphviz_dp(outfile, g, dp);
 	outfile.close();
 }
-void MyGraph::write_gv(string filename) {
+void MyGraph::write_gv(const string& filename) {
 	Edge_iter ei,ef;
 	tie( ei, ef) = edges(g);
 	for ( ; ei != ef ; ++ei ){

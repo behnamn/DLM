@@ -8,7 +8,7 @@
 #include "Strand.h"
 
 //Strand Methods
-void Strand::set_seq(string& seq_){
+void Strand::set_seq(const string& seq_){
 	seq = seq_;
 }
 void Strand::set_length(){

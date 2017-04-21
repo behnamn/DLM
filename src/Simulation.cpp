@@ -129,8 +129,8 @@ void Local::run() {
 	//clock_t t0;
    	//double total_time;
 	//t0 = clock();
-	clock_t t1, t2;
-	double time_per_step;
+	//clock_t t1, t2;
+	//double time_per_step;
 	ofstream occupancy_file;
 	occupancy_file.open(inputs->occupancy_file_name);
 	Transition* next;
@@ -146,7 +146,7 @@ void Local::run() {
 	//double test_time;
 
 	while (ramp->current_t < ramp->t_max){
-		t1 = clock();
+		//t1 = clock();
 		T_now = ramp->get_T();
 		fill_transitions();
 		//t3 = clock();
@@ -200,10 +200,10 @@ void Local::run() {
 		next->apply(G);
 		ramp->move_time(tau); 
 		T_past = T_now;
-		t2 = clock();
-		time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
+		//t2 = clock();
+		//time_per_step = (t2-t1) / (double) CLOCKS_PER_SEC;
 		//total_time = (t2-t0) / (double) CLOCKS_PER_SEC;
-		occupancy_file << time_per_step << "\t";
+		//occupancy_file << time_per_step << "\t";
 	    occupancy_file << "\n";
 	}
 	occupancy_file.close();

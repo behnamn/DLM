@@ -654,7 +654,7 @@ void MyMaps::fill_transition_map(){
 
 //Transition
 Transition::Transition(){}
-Transition::Transition(ST staple_, DOM domain_, int target, int pos_cross, MyMaps* mymaps_){
+Transition::Transition(const ST staple_, const DOM domain_, int target, int pos_cross, MyMaps* mymaps_){
 	this->staple = staple_;
 	this->domain = domain_;
 	this->maps = mymaps_;

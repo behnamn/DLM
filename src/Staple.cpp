@@ -9,12 +9,12 @@
 
 //Staple Methods
 Staple::Staple () {}
-Staple::Staple (string &string_) {
+Staple::Staple (const string &string_) {
 	read_string(string_);
 	set_length();
 	set_reverse_comp();
 }
-void Staple::read_string(string& line_){
+void Staple::read_string(const string& line_){
 	vector<std::string> line; //To split the line into position, seq and domains.
 	boost::split(line, line_, boost::is_any_of("\t"));	
 	if (line.size()>5) {printf ("Error:\t tab separation of staple line failed... Or more than 3 domains found on staple.\n"); exit (EXIT_FAILURE);}
@@ -104,7 +104,7 @@ void Staple::print(){
 	}
 	cout << endl;
 }
-pair<CR,bool> Staple::dp2cross(DOM d1, DOM d2){
+pair<CR,bool> Staple::dp2cross(const DOM d1, const DOM d2){
 	pair<CR,bool> result;
 	result.second = false;
 	for (auto c1 = d1->crossovers.begin(); c1!= d1->crossovers.end(); ++c1){

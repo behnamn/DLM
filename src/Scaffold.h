@@ -13,8 +13,8 @@
 class Scaffold: public Strand {
 public:
 	Scaffold();
-	Scaffold(string&);
-	void read_sequence_file(string&);
+	Scaffold(const string&);
+	void read_sequence_file(const string&);
 	int first_nuc;
 	//vector<Domain*> domains;
 };

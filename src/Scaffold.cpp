@@ -10,12 +10,12 @@
 //Scaffold Methods
 Scaffold::Scaffold () {
 }
-Scaffold::Scaffold (string& scaffold_file_name) {
+Scaffold::Scaffold (const string& scaffold_file_name) {
 	read_sequence_file(scaffold_file_name);
 	set_length();
 	set_reverse_comp();
 }
-void Scaffold::read_sequence_file(string& scaffold_file_name){
+void Scaffold::read_sequence_file(const string& scaffold_file_name){
 	string line;
 	ifstream myfile (scaffold_file_name);
 	if (myfile.is_open()) {

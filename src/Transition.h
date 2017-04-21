@@ -47,7 +47,7 @@ public:
 class Transition {
 public:
 	Transition();
-	Transition(ST , DOM, int, int, MyMaps*);
+	Transition(const ST , const DOM, int, int, MyMaps*);
 	void initialise(int, int);
 
 	MyMaps* maps;

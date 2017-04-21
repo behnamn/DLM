@@ -196,7 +196,6 @@ void Design::add_domains(){
 		dom->dH = dH;
 		dom->dS = dS;
 	}
-
 }	
 void Design::add_domains_to_staples(){ //Adds pointers. Fills s_index, is_middle, is_seam, is_edge.
 	string rev_comp;

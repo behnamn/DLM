@@ -66,11 +66,11 @@ public:
 	void add_domains();
 	void reset_vertex_index(); 
 	void reset_edge_index(); 
-	double total_weight(CR); 
+	double total_weight(const CR); 
 	void update_embedding(); 
 
-	void bind_domain(DOM);
-	void unbind_domain(DOM);
+	void bind_domain(const DOM);
+	void unbind_domain(const DOM);
 	
 	void add_crossover(CR);
 	void remove_crossover(CR);
@@ -82,8 +82,8 @@ public:
 	int num_bound_S;
 
 	void print_edges();
-	void write_gv(string);
-	void write_gv_circle(string);
+	void write_gv(const string&);
+	void write_gv_circle(const string&);
 	void print_embedding(); 
 	//Edge_desc id_to_edge(int);
 	

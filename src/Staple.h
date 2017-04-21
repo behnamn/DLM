@@ -13,8 +13,8 @@
 class Staple: public Strand {
 public:
 	Staple();
-	Staple(string&);
-	void read_string(string&);
+	Staple(const string&);
+	void read_string(const string&);
 	int id;
 	pair<int,int> nucs; //Should be coloumns (not nucs)
 	pair<int,int> helices;
@@ -26,7 +26,7 @@ public:
 	
 	void print();
 	vector<int> state;
-	pair<CR,bool> dp2cross(DOM, DOM);
+	pair<CR,bool> dp2cross(const DOM, const DOM);
 };
 
 typedef vector<Staple>::iterator ST;
