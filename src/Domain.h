@@ -19,10 +19,16 @@ public:
 	int id; //use vertices.first instead
 	pair<int,int> nucs;
 	pair<int,int> vertices;
-	vector<Domain*> cross_domains; //no need for this
-	vector<Crossover*> crossovers;
-	vector<Domain*> stack_domains;
-	Staple* staple; 
+	vector<
+			vector<Domain>::iterator
+			> cross_domains; 
+	vector<
+			vector<Crossover>::iterator
+			> crossovers;
+	vector<
+			vector<Domain>::iterator
+			> stack_domains;
+	vector<Staple>::iterator staple; 
 	bool is_middle;
 	int s_index; 
 	bool is_seam;
@@ -37,5 +43,7 @@ public:
 	
 	Edge_desc edge; //pair<Edge_desc, bool> edgePair = edge(u, v, g);
 };
+
+typedef vector<Domain>::iterator DOM;
 
 #endif

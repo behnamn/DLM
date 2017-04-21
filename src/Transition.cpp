@@ -632,6 +632,7 @@ void MyMaps::fill_transition_map(){
 			transition_map.insert(make_pair(make_pair(*(it),p), get_changes(*(it),p) ));
 		}
 	}
+	//Print
 	/*
 	for (auto it = transition_map.begin(); it!=transition_map.end(); ++it){
 		for(auto s = it->first.first.begin(); s!=it->first.first.end(); ++s){
@@ -647,9 +648,10 @@ void MyMaps::fill_transition_map(){
 	*/
 }
 
+
 //Transition
 Transition::Transition(){}
-Transition::Transition(Staple* staple_, Domain* domain_, int target, int pos_cross, MyMaps* mymaps_){
+Transition::Transition(ST staple_, DOM domain_, int target, int pos_cross, MyMaps* mymaps_){
 	this->staple = staple_;
 	this->domain = domain_;
 	this->maps = mymaps_;

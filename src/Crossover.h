@@ -16,8 +16,8 @@ public:
 	int id;
 	pair<int,int> nucs;
 	pair<int,int> vertices;
-	pair<Domain*,Domain*> domains;
-	Staple* staple;
+	pair<DOM,DOM> domains;
+	vector<Staple>::iterator staple;
 	bool is_seam;
 	bool is_long;
 	bool is_53; 
@@ -37,6 +37,6 @@ public:
 	pair<Edge_desc,bool> edge;
 };
 
-
+typedef vector<Crossover>::iterator CR;
 
 #endif

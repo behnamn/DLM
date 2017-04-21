@@ -69,11 +69,11 @@ public:
 	double total_weight(int, int); 
 	void update_embedding(); 
 
-	void bind_domain(Domain*);
-	void unbind_domain(Domain*);
+	void bind_domain(DOM);
+	void unbind_domain(DOM);
 	
-	void add_crossover(Crossover*);
-	void remove_crossover(Crossover*);
+	void add_crossover(CR);
+	void remove_crossover(CR);
 
 	int num_bound_domains;
 	int num_bound_nucs;

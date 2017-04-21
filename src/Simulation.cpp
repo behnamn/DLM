@@ -8,7 +8,7 @@
 #include "Simulation.h"
 
 //General Simulation Methods
-double Simulation::dG_duplex(Domain* domain) {
+double Simulation::dG_duplex(DOM domain) {
 	double terminal = 0;
 	double T = ramp->get_T();
 	if (domain->seq[0] == 'A' || domain->seq[0] == 'T'){
@@ -20,7 +20,7 @@ double Simulation::dG_duplex(Domain* domain) {
 	double dS_salt = (domain->length - 1) * salt_per_phosphate_hack; // using 0.001 * 12.5 and 0.001 * 40.  (Frits)
 	return dH_init - T*dS_init + domain->dH - T*domain->dS + terminal - T*dS_salt;
 }
-double Simulation::dG_duplex_average(Domain* domain) {
+double Simulation::dG_duplex_average(DOM domain) {
 	double result;
 	double T = ramp->get_T();
 	double terminal = ( ( dH_termAT - T*dS_termAT ) + ( dH_termCG - T*dS_termCG ) ); // 2 * 1/2
@@ -43,7 +43,7 @@ double Simulation::dG_stack() {
 }	
 
 //Local Model Methods
-double Local::dG_shape(Crossover* crossover) {
+double Local::dG_shape(CR crossover) {
 	double result;
 	double E;
 	E = lambda_ss * lambda_ss + G->total_weight(crossover->vertices.first, crossover->vertices.second);
@@ -59,14 +59,24 @@ Local::Local(Constants *constants_, Design* design_, MyGraph *G_, TempRamp *ramp
 	maps = MyMaps();
 }
 void Local::fill_transitions(){
+	/*
+	clock_t t1, t2, t3;
+	double fill_tr_time;
+	double calc_rate_time;
+	t1 = clock();
+	t2 = clock();
+	fill_tr_time = (t2-t1) / (double) CLOCKS_PER_SEC;
+	calc_rate_time = (t3-t2) / (double) CLOCKS_PER_SEC;
+	cout << fill_tr_time << "\t" << calc_rate_time << "\n";
+	*/
 	transitions.clear();
 	total_rate = 0.;
 	vector<pair<int,int> > dummy;
 	for (vector<Staple>::iterator st = design->staples.begin(); st!=design->staples.end(); ++st){
-		for (vector<Domain*>::iterator dom = st->domains.begin(); dom!=st->domains.end(); ++dom){
+		for (vector<DOM>::iterator dom = st->domains.begin(); dom!=st->domains.end(); ++dom){
 			dummy = maps.transition_map[ make_pair( st->state, (*dom)->s_index ) ];
 			for (auto pa = dummy.begin(); pa!=dummy.end(); ++pa){
-				transitions.push_back(Transition(&(*st), *dom, pa->first, pa->second, &maps));
+				transitions.push_back(Transition(st, *(dom), pa->first, pa->second, &maps));
 			}
 		}
 	}
@@ -133,10 +143,18 @@ void Local::run() {
 	uniform_real<> uni_dist(0,1);
 	variate_generator<base_generator_type&, uniform_real<> > uni(generator, uni_dist);
 	ramp->set_time(0.);
+
+
+	//clock_t t3;
+	//double test_time;
+
 	while (ramp->current_t < ramp->t_max){
 		t1 = clock();
 		T_now = ramp->get_T();
 		fill_transitions();
+		//t3 = clock();
+		//test_time = (t3-t1) / (double) CLOCKS_PER_SEC;
+		//cout << test_time << "\n";
 		r1 = uni(); r2 = uni();
 		min = 0.; 
 		max = 0.;
@@ -149,6 +167,7 @@ void Local::run() {
 			min = max;
 		}
 		tau = (1./total_rate)*log(1./r1);		
+		//cout << total_rate << "\n";
 		if (tau > ramp->cool_rate){continue;}
 
 		occupancy_file << ramp->current_t << "\t";

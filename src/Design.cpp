@@ -19,7 +19,6 @@ Design::Design(Inputs* inputs_){
 	add_crossovers();
 	fill_stack_domains();
 	initialise_states();
-	
 }
 
 //Initialisers
@@ -206,7 +205,7 @@ void Design::add_domains_to_staples(){ //Adds pointers. Fills s_index, is_middle
 			rev_comp = reverse_comp(td->seq);
 			for (vector<Domain>::iterator d=domains.begin(); d!=domains.end(); ++d){
 				if(d->seq == rev_comp){
-					st->domains.push_back(&*d);
+					st->domains.push_back(d);
 					if (d->nucs.first < d->nucs.second){
 						for (int i = d->nucs.first; i < d->nucs.second+1; i++){M.push_back(i);}
 					}
@@ -220,8 +219,8 @@ void Design::add_domains_to_staples(){ //Adds pointers. Fills s_index, is_middle
 		st->temp_domains.clear();
 	}
 	for (vector<Staple>::iterator st=staples.begin(); st!=staples.end(); ++st){
-		for (vector<Domain*>::iterator dom=st->domains.begin(); dom!=st->domains.end(); ++dom){
-			(*dom)->staple = &*st;
+		for (vector<DOM>::iterator dom=st->domains.begin(); dom!=st->domains.end(); ++dom){
+			(*dom)->staple = st;
 			(*dom)->s_index = dom - st->domains.begin();
 			(*dom)->is_middle = false;
 			if (st->domains.size() == 3 && (*dom)->s_index == 1) {(*dom)->is_middle = true;}
@@ -256,7 +255,7 @@ void Design::add_crossovers(){
 				crossover.vertices.first = (s->domains[d])->vertices.first;
 				crossover.vertices.second = (s->domains[d+1])->vertices.second;
 				crossover.domains = make_pair(s->domains[d],s->domains[d+1]);
-				crossover.staple = &*s;
+				crossover.staple = s;
 				crossover.is_long = false;
 				crossover.is_seam = true;
 				this->crossovers.push_back(crossover);
@@ -268,7 +267,7 @@ void Design::add_crossovers(){
 				crossover.vertices.first = (s->domains[d])->vertices.second;
 				crossover.vertices.second = (s->domains[d+1])->vertices.first;
 				crossover.domains = make_pair(s->domains[d],s->domains[d+1]);
-				crossover.staple = &*s;
+				crossover.staple = s;
 				crossover.is_long = false;
 				crossover.is_seam = false;
 				this->crossovers.push_back(crossover);
@@ -276,8 +275,8 @@ void Design::add_crossovers(){
 		}
 	}
 	//Adding long crossovers
-	Domain* dom3;
-   	Domain*	dom5;
+	DOM dom3;
+   	DOM	dom5;
 	Crossover crossover;
 	for (vector<Staple>::iterator st=staples.begin(); st!=staples.end(); ++st){
 		if (st->n_domains == 3){
@@ -288,7 +287,7 @@ void Design::add_crossovers(){
 			crossover.vertices.first = dom3->vertices.second;
 			crossover.vertices.second = dom5->vertices.first;
 			crossover.domains = make_pair(dom3,dom5);
-			crossover.staple = &*st;
+			crossover.staple = st;
 			crossover.is_long = true;
 			if (st->is_seam){crossover.is_seam = true;}
 			else{crossover.is_seam = false;}
@@ -336,16 +335,16 @@ void Design::add_crossovers(){
 	for (vector<Crossover>::iterator cross = crossovers.begin(); cross!=crossovers.end(); ++cross){
 		for (vector<Staple>::iterator s = staples.begin(); s != staples.end(); ++s){
 			if (cross->staple->id == s->id){
-				s->crossovers.push_back(&*cross);
+				s->crossovers.push_back(cross);
 			}
 		}
 		for (vector<Domain>::iterator dom = domains.begin(); dom != domains.end(); ++dom){
 			if (cross->domains.first->id == dom->id){
-				dom->crossovers.push_back(&*cross);
+				dom->crossovers.push_back(cross);
 				dom->cross_domains.push_back(cross->domains.second);
 			}
 			if (cross->domains.second->id == dom->id){
-				dom->crossovers.push_back(&*cross);
+				dom->crossovers.push_back(cross);
 				dom->cross_domains.push_back(cross->domains.first);
 			}
 		}
@@ -354,14 +353,14 @@ void Design::add_crossovers(){
 void Design::fill_stack_domains(){
 	for (vector<Domain>::iterator dom = domains.begin(); dom != domains.end(); ++dom) {
 		if (dom->is_seam){
-			for (vector<Crossover*>::iterator cross = dom->crossovers.begin(); cross != dom->crossovers.end(); ++cross){
+			for (vector<CR>::iterator cross = dom->crossovers.begin(); cross != dom->crossovers.end(); ++cross){
 				if ((*cross)->is_seam && !(*cross)->is_long){
 					if ((*cross)->domains.first->id == dom-domains.begin()){
-						dom->stack_domains.push_back(&*(dom-1));
+						dom->stack_domains.push_back((dom-1));
 						dom->stack_domains.push_back((*cross)->domains.second);
 					}
 					else if ((*cross)->domains.second->id == dom-domains.begin()){
-						dom->stack_domains.push_back(&*(dom+1));
+						dom->stack_domains.push_back((dom+1));
 						dom->stack_domains.push_back((*cross)->domains.first);
 					}
 					else {
@@ -373,22 +372,22 @@ void Design::fill_stack_domains(){
 		else if (dom->is_edge){
 			if (dom-domains.begin() < n_domains/2) {
 				if (dom->helix % 2 != 0){ //1,3,5,7,9,11 Left
-					if (dom!=domains.begin()) {dom->stack_domains.push_back(&*(dom-1));}
-					else {dom->stack_domains.push_back(&*domains.end());} 
+					if (dom!=domains.begin()) {dom->stack_domains.push_back((dom-1));}
+					else {dom->stack_domains.push_back(domains.end());} 
 				}
 				else{ //2,4,6,8,10,12 Left
-					if (dom!=domains.end()) {dom->stack_domains.push_back(&*(dom+1));}
-					else {dom->stack_domains.push_back(&*domains.begin());} 
+					if (dom!=domains.end()) {dom->stack_domains.push_back((dom+1));}
+					else {dom->stack_domains.push_back(domains.begin());} 
 				}
 			}
 			else if (dom-domains.begin() > n_domains/2){
 				if (dom->helix % 2 != 0){ //1,3,5,7,9,11 Right
-					if (dom!=domains.end()) {dom->stack_domains.push_back(&*(dom+1));}
-					else {dom->stack_domains.push_back(&*domains.begin());} 
+					if (dom!=domains.end()) {dom->stack_domains.push_back((dom+1));}
+					else {dom->stack_domains.push_back(domains.begin());} 
 				}
 				else{ //2,4,6,8,10,12 Right
-					if (dom!=domains.begin()) {dom->stack_domains.push_back(&*(dom-1));}
-					else {dom->stack_domains.push_back(&*domains.end());} 
+					if (dom!=domains.begin()) {dom->stack_domains.push_back((dom-1));}
+					else {dom->stack_domains.push_back(domains.end());} 
 				}
 			}
 			else {
@@ -396,10 +395,10 @@ void Design::fill_stack_domains(){
 			}
 		}
 		else{
-			if (dom!=domains.end()) {dom->stack_domains.push_back(&*(dom+1));}
-			else {dom->stack_domains.push_back(&*domains.begin());} 
-			if (dom!=domains.begin()) {dom->stack_domains.push_back(&*(dom-1));}
-			else {dom->stack_domains.push_back(&*domains.end());} 
+			if (dom!=domains.end()) {dom->stack_domains.push_back((dom+1));}
+			else {dom->stack_domains.push_back(domains.begin());} 
+			if (dom!=domains.begin()) {dom->stack_domains.push_back((dom-1));}
+			else {dom->stack_domains.push_back(domains.end());} 
 		}
 	}
 }
@@ -420,6 +419,7 @@ void Design::initialise_states(){
 
 
 //Converters
+/*
 pair<bool,Crossover*> Design::dp2cross(Domain* d1, Domain* d2){
 	pair<bool,Crossover*> result;
 	result.first = false;
@@ -435,6 +435,7 @@ pair<bool,Crossover*> Design::dp2cross(Domain* d1, Domain* d2){
 	}
 	return result;
 }
+*/
 
 //Printers
 void Design::print_staples(){
@@ -457,16 +458,16 @@ void Design::print_domains(){
 		cout << "s_index " << dom->s_index << "\t";
 		cout << "helix " << dom->helix << "\t";
 		cout << "Crossover_ids: ";
-		for (vector<Crossover*>::iterator cross=dom->crossovers.begin(); cross!=dom->crossovers.end(); ++cross){
+		for (vector<CR>::iterator cross=dom->crossovers.begin(); cross!=dom->crossovers.end(); ++cross){
 			cout << (*cross)->id << "\t"; 
 			//cout << (*cross)->id << ": " << "(" << (*cross)->domains.first->id << "->" << (*cross)->domains.second->id << ")\t";
 		}
 		cout << "Cross_domains: ";
-		for (vector<Domain*>::iterator cross_dom=dom->cross_domains.begin(); cross_dom!=dom->cross_domains.end(); ++cross_dom){
+		for (vector<DOM>::iterator cross_dom=dom->cross_domains.begin(); cross_dom!=dom->cross_domains.end(); ++cross_dom){
 			cout << (*cross_dom)->id << " (" << (*cross_dom)->vertices.first << "->" << (*cross_dom)->vertices.second << ")\t"; 
 		}
 		cout << "Stack_domains: ";
-		for (vector<Domain*>::iterator stack_dom=dom->stack_domains.begin(); stack_dom!=dom->stack_domains.end(); ++stack_dom){
+		for (vector<DOM>::iterator stack_dom=dom->stack_domains.begin(); stack_dom!=dom->stack_domains.end(); ++stack_dom){
 			cout << (*stack_dom)->id << " (" << (*stack_dom)->vertices.first << "->" << (*stack_dom)->vertices.second << ")\t"; 
 		}
 		cout << endl;

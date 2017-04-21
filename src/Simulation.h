@@ -30,8 +30,8 @@ class Simulation{
 
 		MyMaps maps;
 
-		double dG_duplex(Domain*);
-		double dG_duplex_average(Domain*);
+		double dG_duplex(DOM);
+		double dG_duplex_average(DOM);
 		double dG_stack();
 
 		vector<Transition> transitions;
@@ -43,7 +43,7 @@ class Local: public Simulation{
 		Local(Constants*, Design*, MyGraph*, TempRamp*, Inputs*);
 		~Local(){}
 
-		double dG_shape(Crossover*);
+		double dG_shape(CR);
 
 		void fill_transitions();
 		void run();

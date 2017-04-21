@@ -13,8 +13,11 @@ class Domain;
 
 struct EdgeProperty{
 	int id;
-	pair<Domain*,bool> domain;
-	pair<Crossover*,bool> crossover;
+	pair<vector<Domain>::iterator,
+		bool> domain;
+	pair<
+		vector<Crossover>::iterator, 
+		bool> crossover;
 	double weight;
 
 	//For drawing

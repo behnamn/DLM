@@ -88,7 +88,7 @@ void Staple::print(){
 	cout << this->is_seam << "\t";
 	//cout << reverse_comp << "\t";
 	cout << "Domains:\t";
-	for (vector<Domain*>::iterator dom = domains.begin(); dom != domains.end(); ++dom){
+	for (vector<DOM>::iterator dom = domains.begin(); dom != domains.end(); ++dom){
 		//cout << "(" << (**dom).id << ") ";
 		cout << "(" << (**dom).vertices.first << "->" << (**dom).vertices.second << ") ";
 		cout << "(" << (**dom).nucs.first << "->" << (**dom).nucs.second << ") ";
@@ -96,15 +96,15 @@ void Staple::print(){
 		//cout << "(" << seq_domains[d] << ")\t";
 	}
 	cout << "Crossovers:\t";
-	for (vector<Crossover*>::iterator cross = crossovers.begin(); cross != crossovers.end(); ++cross){
+	for (vector<CR>::iterator cross = crossovers.begin(); cross != crossovers.end(); ++cross){
 		//cout << "(" << (**cross).id << ") ";
 		cout << "(" << (**cross).vertices.first << "->" << (**cross).vertices.second << ") ";
 		cout << "(" << (**cross).nucs.first << "->" << (**cross).nucs.second << ") ";
 	}
 	cout << endl;
 }
-pair<Crossover*,bool> Staple::dp2cross(Domain* d1, Domain* d2){
-	pair<Crossover*,bool> result;
+pair<CR,bool> Staple::dp2cross(DOM d1, DOM d2){
+	pair<CR,bool> result;
 	result.second = false;
 	for (auto c1 = d1->crossovers.begin(); c1!= d1->crossovers.end(); ++c1){
 		for (auto c2 = d2->crossovers.begin(); c2!= d2->crossovers.end(); ++c2){

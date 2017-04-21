@@ -45,7 +45,7 @@ public:
 	
 	vector<int> M; //To track already matched bases.
 	
-	pair<bool,Crossover*> dp2cross(Domain*, Domain*);
+	//pair<bool,Crossover*> dp2cross(Domain*, Domain*);
 };
 
 

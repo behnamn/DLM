@@ -32,13 +32,13 @@ void MyGraph::add_domains(){
 	EP.crossover.second = false;
 	for (vector<Domain>::iterator d = design->domains.begin(); d != design->domains.end(); ++d) {	
 		EP.id = distance(design->domains.begin(), d);
-		EP.domain = make_pair(&*d,true);
+		EP.domain = make_pair(d,true);
 		EP.weight = d->length * l_ss * lambda_ss;
 		EP.length = d->length;
 		d->edge = add_edge(d->vertices.first, d->vertices.second, EP, g).first;
 	}
 }
-void MyGraph::bind_domain(Domain* domain){
+void MyGraph::bind_domain(DOM domain){
 	g[domain->edge].weight = domain->length * domain->length * ds_hack;
 	num_bound_domains++;
 	if(domain->staple->n_domains == 1){num_bound_H++;}
@@ -48,7 +48,7 @@ void MyGraph::bind_domain(Domain* domain){
 	//For drawing
 	g[domain->edge].type = 'd';
 }
-void MyGraph::unbind_domain(Domain* domain){
+void MyGraph::unbind_domain(DOM domain){
 	g[domain->edge].weight = domain->length * ss_hack;
 	num_bound_domains--;
 	if(domain->staple->n_domains == 1){num_bound_H--;}
@@ -105,7 +105,7 @@ double MyGraph::total_weight(int a, int b) {
 }
 
 //Transition Methods
-void MyGraph::add_crossover(Crossover* cross){
+void MyGraph::add_crossover(CR cross){
 	EdgeProperty EP; 
 	EP.domain.second = false;
    	EP.crossover = make_pair(cross,true);
@@ -115,9 +115,10 @@ void MyGraph::add_crossover(Crossover* cross){
 	cross->edge = add_edge(cross->vertices.first, cross->vertices.second, EP, g);
 	reset_edge_index();
 }
-void MyGraph::remove_crossover(Crossover* cross){
+void MyGraph::remove_crossover(CR cross){
 	//Make sure this doesn't fuck up because of 5->3 / 3->5.
-	remove_edge(cross->vertices.first, cross->vertices.second, g);
+	//remove_edge(cross->vertices.first, cross->vertices.second, g);
+	remove_edge(cross->edge.first, g);
 	cross->edge.second = false;
 	reset_edge_index();
 }

@@ -21,15 +21,14 @@ public:
 	vector<Domain> temp_domains; //for sizes and seqs
 	bool is_seam;
 	bool is_edge;
-	vector<Domain*> domains;
-	vector<Crossover*> crossovers;
+	vector<DOM> domains;
+	vector<CR> crossovers;
 	
 	void print();
 	vector<int> state;
-	pair<Crossover*,bool> dp2cross(Domain*, Domain*);
-
-	
+	pair<CR,bool> dp2cross(DOM, DOM);
 };
 
+typedef vector<Staple>::iterator ST;
 
 #endif

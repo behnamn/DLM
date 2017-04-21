@@ -16,11 +16,12 @@ int main(int argc, char * argv[]) {
 	Inputs *inputs = new Inputs(argc,argv);
 	Constants *constants = new Constants(inputs->gamma,inputs->n_param,inputs->concentration);
 	Design *design = new Design(inputs);
-	//design.print_staples();
-	//design.print_domains();
-	//design.print_crossovers();
+	//design->print_staples();
+	//design->print_domains();
+	//design->print_crossovers();
 	
 	MyGraph *G = new MyGraph(design);
+	//G->print_edges();
 
 	if (inputs->anneal){
 		Anneal *anneal = new Anneal(inputs);

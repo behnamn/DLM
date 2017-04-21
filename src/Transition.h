@@ -43,18 +43,19 @@ public:
 	void fill_transition_map();
 };
 
+
 class Transition {
 public:
 	Transition();
-	Transition(Staple* , Domain*, int, int, MyMaps*);
+	Transition(ST , DOM, int, int, MyMaps*);
 	void initialise(int, int);
 
 	MyMaps* maps;
-	Staple* staple;
-	Domain* domain;
+	ST staple;
+	DOM domain;
 	
 	vector<int> final_state;
-	pair<Crossover*, bool> crossover;
+	pair<CR, bool> crossover;
 	bool bind; 		//1: bind, 0: unbind
 
 	double rate;
