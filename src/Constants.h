@@ -8,7 +8,6 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-#include "Headers.h"
 #include "Common.h"
 
 const double k_plus = pow(10,3); // mol-1  m3  s-1
@@ -69,6 +68,7 @@ class Constants{
 	public:
 		Constants();
 		Constants(double, double, double);
+		virtual ~Constants();
 		
 		void write_params(ofstream &); 
 		void change_gamma(double);

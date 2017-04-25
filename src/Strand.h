@@ -12,6 +12,9 @@
 
 class Strand {
 public:
+	Strand();
+	virtual ~Strand(){}
+
 	int length;
 	int n_domains; 
 	

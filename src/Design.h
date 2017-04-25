@@ -19,6 +19,8 @@ class Design {
 public:
 	Design();
 	Design(Inputs*);
+	virtual ~Design(){}
+
 	Inputs* inputs;
 	
 	Scaffold scaffold;

@@ -8,9 +8,7 @@
 #ifndef MYGRAPH_H_
 #define MYGRAPH_H_
 
-#include "Constants.h"
-#include "Graph.h"
-#include "Graph.h"
+#include "../Headers/Graph.h"
 #include "Design.h"
 
 struct face_counter : public planar_face_traversal_visitor {
@@ -58,6 +56,8 @@ public:
 class MyGraph{
 public:
 	MyGraph (Design*);
+	virtual ~MyGraph(){}
+
 	Design* design;
 	Graph g;
 	Embedding emb;

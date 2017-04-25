@@ -12,12 +12,16 @@
 
 class Crossover {
 public:
-	Crossover(){}
+	Crossover();
+	virtual ~Crossover(){}
+
 	int id;
-	pair<int,int> nucs;
-	pair<int,int> vertices;
+
 	pair<DOM,DOM> domains;
 	vector<Staple>::iterator staple;
+	
+	pair<int,int> nucs;
+	pair<int,int> vertices;
 	bool is_seam;
 	bool is_long;
 	bool is_53; 
@@ -33,7 +37,6 @@ public:
 	 * o: outside
 	 */
 	
-	//Not set
 	pair<Edge_desc,bool> edge;
 };
 

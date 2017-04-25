@@ -8,10 +8,9 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
-#include "Headers.h"
-#include "Common.h"
-#include "VertexProperty.h"
-#include "EdgeProperty.h"
+#include "../Headers/Headers.h"
+#include "../Headers/VertexProperty.h"
+#include "../Headers/EdgeProperty.h"
 
 typedef adjacency_list<vecS, vecS, undirectedS, VertexProperty, EdgeProperty > Graph;
 typedef graph_traits<Graph>::vertex_iterator Vertex_iter;

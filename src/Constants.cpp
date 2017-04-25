@@ -34,11 +34,12 @@ Constants::Constants () { //conc_ in nM
 	n_parameter = 2.;
 }
 
-Constants::Constants (double y_, double n_, double conc_) { //conc_ in nM
+Constants::Constants (double y_, double n_, double conc_) : n_parameter(n_) { //conc_ in nM
 	change_gamma(y_);
-	conc_staple = conc_ * pow(10,-6);; // mol m-3
-	n_parameter = n_;
+	conc_staple = conc_ * pow(10,-6); // mol m-3
+	//n_parameter = n_;
 }
 
+Constants::~Constants(){}
 
 

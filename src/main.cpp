@@ -33,6 +33,7 @@ int main(int argc, char * argv[]) {
 		Anneal *anneal = new Anneal(inputs);
 		Local local_a = Local(constants, design, G, anneal, inputs);
 		local_a.run();
+		delete anneal;
 	}
 	else if (inputs->melt){
 		//local_m.run();
@@ -52,6 +53,8 @@ int main(int argc, char * argv[]) {
 
 	delete inputs;
 	delete constants;
+	delete design;
+	delete G;
 
 	return 0;
 }

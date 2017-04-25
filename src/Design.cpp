@@ -9,8 +9,7 @@
 
 //Constructors
 Design::Design(){}
-Design::Design(Inputs* inputs_){
-	this->inputs = inputs_;
+Design::Design(Inputs* inputs_) : inputs(inputs_){
 	add_scaffold();
 	add_helices();
 	add_staples();

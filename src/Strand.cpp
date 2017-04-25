@@ -7,6 +7,9 @@
 
 #include "Strand.h"
 
+
+Strand::Strand(){}
+
 //Strand Methods
 void Strand::set_seq(const string& seq_){
 	seq = seq_;

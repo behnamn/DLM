@@ -8,8 +8,7 @@
 #include "MyGraph.h"
 
 
-MyGraph::MyGraph (Design* design_){
-	design = design_;
+MyGraph::MyGraph (Design* design_) : design(design_) {
 	add_vertices();
 	add_domains();
 	num_bound_domains=0;

@@ -8,12 +8,15 @@
 #ifndef TEMPRAMP_H_
 #define TEMPRAMP_H_
 
-#include "Headers.h"
 #include "Common.h"
 #include "Input.h"
 
 class TempRamp{
 	public:
+		TempRamp();
+		virtual ~TempRamp(){}
+		//TempRamp(double T_start_, double T_end_, double cool_rate_, int n_cycles_);
+		
 		Inputs * inputs;
 
 		int _current_t;
@@ -22,8 +25,6 @@ class TempRamp{
 		vector<double> _ramp;
 		void _fill_anneal();
 		void _fill_melt();
-		TempRamp();
-		//TempRamp(double T_start_, double T_end_, double cool_rate_, int n_cycles_);
 		
 		bool anneal_first;
 		double T_start;
@@ -53,6 +54,7 @@ class AnnealMelt: public TempRamp{
 class Anneal: public TempRamp{
 	public:
 		Anneal(Inputs*);
+		virtual ~Anneal(){}
 		Anneal(double, double, double);
 		Anneal(double, double, double, int);
 		void _fill_ramp();
@@ -61,6 +63,7 @@ class Anneal: public TempRamp{
 class Melt: public TempRamp{
 	public:
 		Melt(Inputs*);
+		virtual ~Melt(){}
 		Melt(double, double, double);
 		Melt(double, double, double, int);
 		void _fill_ramp();

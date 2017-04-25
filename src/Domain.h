@@ -8,14 +8,16 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-#include "Graph.h"
+#include "../Headers/Graph.h"
 
 class Crossover;
 class Staple;
 
 class Domain {
 public:
-	Domain(){}
+	Domain();
+	virtual ~Domain(){}
+		
 	int id; //use vertices.first instead
 	pair<int,int> nucs;
 	pair<int,int> vertices;

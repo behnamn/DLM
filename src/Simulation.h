@@ -8,10 +8,6 @@
 #ifndef SIMULATION_H_
 #define SIMULATION_H_
 
-#include "Headers.h"
-#include "Common.h"
-#include "Domain.h"  
-#include "Design.h" 
 #include "MyGraph.h"
 #include "TempRamp.h"
 #include "Transition.h"

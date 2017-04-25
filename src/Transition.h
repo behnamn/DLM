@@ -8,7 +8,6 @@
 #ifndef TRANSITION_H_
 #define TRANSITION_H_
 
-#include "Headers.h"
 #include "Common.h"
 #include "Staple.h"
 #include "MyGraph.h"
@@ -19,6 +18,7 @@ vector< pair<int,int> > get_changes(vector<int>, int );
 class MyMaps {
 public:
 	MyMaps();
+	virtual ~MyMaps(){}
 
 	std::map< 	vector<int>,
 				vector<int> >
@@ -48,6 +48,8 @@ class Transition {
 public:
 	Transition();
 	Transition(const ST , const DOM, int, int, MyMaps*);
+	virtual ~Transition(){}
+
 	void initialise(int, int);
 
 	MyMaps* maps;

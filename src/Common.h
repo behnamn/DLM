@@ -8,7 +8,7 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#include "Headers.h"
+#include "../Headers/Headers.h"
 
 /*
 const string Scaffold_file_name = "Scaffold.txt";

@@ -14,6 +14,8 @@ class Scaffold: public Strand {
 public:
 	Scaffold();
 	Scaffold(const string&);
+	virtual ~Scaffold(){}
+
 	void read_sequence_file(const string&);
 	int first_nuc;
 	//vector<Domain*> domains;

@@ -14,6 +14,8 @@ class Staple: public Strand {
 public:
 	Staple();
 	Staple(const string&);
+	virtual ~Staple(){}
+
 	void read_string(const string&);
 	int id;
 	pair<int,int> nucs; //Should be coloumns (not nucs)

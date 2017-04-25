@@ -416,7 +416,6 @@ void MyMaps::fill_state_map(){
 		}
 	}
 	//Print
-	/*
 	for (auto it = state_map.begin(); it!=state_map.end(); ++it){
 		for (auto fit = it->first.begin(); fit!=it->first.end(); ++fit){
 			cout << *(fit);
@@ -432,6 +431,7 @@ void MyMaps::fill_state_map(){
 		cout << *(sit);
 	}
 	cout << "\n";
+	/*
 	*/
 }
 
@@ -633,7 +633,6 @@ void MyMaps::fill_transition_map(){
 		}
 	}
 	//Print
-	/*
 	for (auto it = transition_map.begin(); it!=transition_map.end(); ++it){
 		cout << "{";
 		for(auto s = it->first.first.begin(); s!=it->first.first.end(); ++s){
@@ -648,16 +647,14 @@ void MyMaps::fill_transition_map(){
 		}
 		cout << "\n";
 	}
+	/*
 	*/
 }
 
 
 //Transition
 Transition::Transition(){}
-Transition::Transition(const ST staple_, const DOM domain_, int target, int pos_cross, MyMaps* mymaps_){
-	this->staple = staple_;
-	this->domain = domain_;
-	this->maps = mymaps_;
+Transition::Transition(const ST staple_, const DOM domain_, int target, int pos_cross, MyMaps* mymaps_) : staple(staple_), domain(domain_), maps(mymaps_) {
 	initialise(target, pos_cross);
 }
 void Transition::initialise(int target, int pos_cross){

@@ -141,8 +141,8 @@ void AnnealMelt::_fill_ramp(){
 
 
 //Anneal Methods
-Anneal::Anneal(Inputs * inputs_){
-	inputs = inputs_;
+Anneal::Anneal(Inputs * inputs_) {
+	this->inputs = inputs_;
 	current_t = 0.;
 	_current_t = current_t;
 	T_high = kelvin(inputs->max_temp);
@@ -198,7 +198,7 @@ void Anneal::_fill_ramp(){
 
 //Melt Methods
 Melt::Melt(Inputs * inputs_){
-	inputs = inputs_;
+	this->inputs = inputs_;
 	current_t = 0.;
 	_current_t = current_t;
 	T_high = kelvin(inputs->max_temp);
