@@ -51,79 +51,47 @@ Local::Local(Constants *constants_, Design* design_, MyGraph *G_, TempRamp *ramp
 	constants = constants_;
 	G = G_;
 	inputs = inputs_;
-	maps = MyMaps();
+	trManager = TransitionManager(design);
 }
 void Local::fill_transitions(){
-	//clock_t t1, t2, t3;
-	//double fill_tr_time;
-	//double calc_rate_time;
-	transitions.clear();
-	total_rate = 0.;
-	//t1 = clock();
-	vector<pair<int,int> > dummy;
-	for (vector<Staple>::iterator st = design->staples.begin(); st!=design->staples.end(); ++st){
-		for (vector<DOM>::iterator dom = st->domains.begin(); dom!=st->domains.end(); ++dom){
-			dummy = maps.transition_map[ make_pair( st->state, (*dom)->s_index ) ];
-			for (auto pa = dummy.begin(); pa!=dummy.end(); ++pa){
-				transitions.push_back(Transition(st, *(dom), pa->first, pa->second, &maps));
-			}
-		}
-	}
-	//t2 = clock();
+    total_rate = 0;
+    for (auto tr = trManager.transitions.begin(); tr!=trManager.transitions.end(); ++tr){
+        tr->decide(tr->staple->state,tr->domain->s_index);
+    }
 	double dG;
 	double RT = gas_constant * ramp->get_T();
-	for (auto tr = transitions.begin(); tr!=transitions.end(); ++tr){
-		dG=0;
-		if (tr->bind){
-			if(tr->crossover.second == true){
-				dG += dG_shape(tr->crossover.first);
-				tr->rate = 1000. * k_plus * exp( -dG / RT ); 
-			}
-			else{
-				tr->rate = k_plus * constants->conc_staple; 
-			}
-		}
-		else{
-			//if(tr->crossover.second == true){
-				if (inputs->seq_dependence){
-					dG += dG_duplex(tr->domain);
-				}
-				else{
-					dG += dG_duplex_average(tr->domain);
-				}
-				for (auto stack = tr->domain->stack_domains.begin(); stack != tr->domain->stack_domains.end(); ++stack){
-					//if (*((*stack)->state) > 0){
-					//if ( ((*stack)->staple)->state[((*stack)->s_index)] > 0){
-					if( (design->domains[(*stack)->id]).staple->state[(*stack)->s_index] > 0){
-						dG += dG_stack();
-					}
-				}
-				tr->rate = 1000. * k_plus * exp( dG / RT );
-			/*
-			}
-			else{ //same in local model.
-				if (inputs->seq_dependence){
-					dG += dG_duplex(tr->domain);
-				}
-				else{
-					dG += dG_duplex_average(tr->domain);
-				}
-				for (auto stack = tr->domain->stack_domains.begin(); stack != tr->domain->stack_domains.end(); ++stack){
-					//if (*((*stack)->state) > 0){
-					if ( tr->staple->state[((*stack)->s_index)] > 0){
-						dG += dG_stack();
-					}
-				}
-				tr->rate = 1000. * k_plus * exp( dG / RT );
-			}
-			*/
-		}
-		total_rate += tr->rate;
+	for (auto tr = trManager.transitions.begin(); tr!=trManager.transitions.end(); ++tr){
+        if(tr->possible){
+            dG=0;
+            if (tr->bind){
+                if(tr->crossover.second == true){
+                    dG += dG_shape(tr->crossover.first);
+                    tr->rate = 1000. * k_plus * exp( -dG / RT ); 
+                }
+                else{
+                    tr->rate = k_plus * constants->conc_staple; 
+                }
+            }
+            else{
+                //if(tr->crossover.second == true){
+                    if (inputs->seq_dependence){
+                        dG += dG_duplex(tr->domain);
+                    }
+                    else{
+                        dG += dG_duplex_average(tr->domain);
+                    }
+                    for (auto stack = tr->domain->stack_domains.begin(); stack != tr->domain->stack_domains.end(); ++stack){
+                        //if (*((*stack)->state) > 0){
+                        //if ( ((*stack)->staple)->state[((*stack)->s_index)] > 0){
+                        if( (design->domains[(*stack)->id]).staple->state[(*stack)->s_index] > 0){
+                            dG += dG_stack();
+                        }
+                    }
+                    tr->rate = 1000. * k_plus * exp( dG / RT );
+            }
+            total_rate += tr->rate;
+        }
 	}
-	//t3 = clock();
-	//fill_tr_time = (t2-t1) / (double) CLOCKS_PER_SEC;
-	//calc_rate_time = (t3-t2) / (double) CLOCKS_PER_SEC;
-	//cout << fill_tr_time << "\t" << calc_rate_time << "\n";
 }
 void Local::run() {
 	//clock_t t0;
@@ -155,13 +123,15 @@ void Local::run() {
 		r1 = uni(); r2 = uni();
 		min = 0.; 
 		max = 0.;
-		for (auto tr = transitions.begin(); tr!=transitions.end(); ++tr){
-			max += tr->rate/total_rate; 
-			if (r2 >= min && r2 < max){
-				next = &*(tr);
-				break; 
-			}
-			min = max;
+		for (auto tr = trManager.transitions.begin(); tr!=trManager.transitions.end(); ++tr){
+            if (tr->possible){
+                max += tr->rate/total_rate;
+                if (r2 >= min && r2 < max){
+                    next = &*(tr);
+                    break; 
+                }
+                min = max;
+            }
 		}
 		tau = (1./total_rate)*log(1./r1);		
 		//cout << total_rate << "\n";
@@ -177,14 +147,7 @@ void Local::run() {
 			if ( it - next->staple->state.begin() == next->domain->s_index)
 				occupancy_file << ")";
 		}	
-		occupancy_file << "->";
-		for (auto it = next->final_state.begin(); it!=next->final_state.end(); ++it){
-			if ( it - next->final_state.begin() == next->domain->s_index)
-				occupancy_file << "(";
-			occupancy_file << (*it);
-			if ( it - next->final_state.begin() == next->domain->s_index)
-				occupancy_file << ")";
-		}
+		occupancy_file << "->" << next->target;
 		occupancy_file << " ]\t";
 		occupancy_file << next->domain->id << "\t";
 		//occupancy_file << next->rate << "\t";

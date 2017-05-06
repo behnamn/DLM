@@ -8,9 +8,8 @@
 #ifndef SIMULATION_H_
 #define SIMULATION_H_
 
-#include "MyGraph.h"
 #include "TempRamp.h"
-#include "Transition.h"
+#include "TransitionManager.h"
 
 class Simulation{
 	public:
@@ -23,15 +22,15 @@ class Simulation{
 		MyGraph* G;
 		TempRamp* ramp;
 		Inputs* inputs;
-
-		MyMaps maps;
+    
+        TransitionManager trManager;
 
 		double dG_duplex(DOM);
 		double dG_duplex_average(DOM);
 		double dG_stack();
+    
+        double total_rate;
 
-		vector<Transition> transitions;
-		double total_rate;
 };
 
 class Local: public Simulation{

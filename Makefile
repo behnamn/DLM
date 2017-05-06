@@ -4,7 +4,7 @@ CFLAGS=-I$(LDIR) -std=c++11 #-g -pg #-stdlib=libc++
 #CFLAGS=-I$(LDIR) -stdlib=libc++
 #CFLAGS=-I$(LDIR) 
 ODIR=./bin/
-OBJS=$(ODIR)main.o $(ODIR)Domain.o $(ODIR)Crossover.o $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)Simulation.o
+OBJS=$(ODIR)main.o $(ODIR)Domain.o $(ODIR)Crossover.o $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)Simulation.o $(ODIR)TransitionManager.o
 EXECUTABLE=$(ODIR)DLM
 SDIR=./src/
 HDIR=./Headers/
@@ -22,11 +22,14 @@ DEPS = $(SDIR)Crossover.h $(SDIR)Domain.h $(HDIR)VertexProperty.h $(HDIR)EdgePro
 $(EXECUTABLE): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(EXECUTABLE)
 
-$(ODIR)main.o: $(SDIR)main.cpp $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)Simulation.o
+$(ODIR)main.o: $(SDIR)main.cpp $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)TransitionManager.o $(ODIR)Simulation.o
 	$(CC) $(CFLAGS) -c $(SDIR)main.cpp -o $(ODIR)main.o
 
-$(ODIR)Simulation.o: $(SDIR)Simulation.cpp $(SDIR)Simulation.h $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o 
+$(ODIR)Simulation.o: $(SDIR)Simulation.cpp $(SDIR)Simulation.h $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)TransitionManager.o 
 	$(CC) $(CFLAGS) -c $(SDIR)Simulation.cpp -o $(ODIR)Simulation.o
+
+$(ODIR)TransitionManager.o: $(SDIR)TransitionManager.cpp $(SDIR)TransitionManager.h $(ODIR)Transition.o $(ODIR)Common.o 
+	$(CC) $(CFLAGS) -c $(SDIR)TransitionManager.cpp -o $(ODIR)TransitionManager.o
 
 $(ODIR)Transition.o: $(SDIR)Transition.cpp $(SDIR)Transition.h $(ODIR)Common.o 
 	$(CC) $(CFLAGS) -c $(SDIR)Transition.cpp -o $(ODIR)Transition.o

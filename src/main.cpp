@@ -9,11 +9,12 @@
 #include "Design.h"
 #include "MyGraph.h"
 #include "TempRamp.h"
-#include "Transition.h"
 #include "Simulation.h"
 
 int main(int argc, char * argv[]) {
 	Inputs *inputs = new Inputs(argc,argv);
+    //Inputs *inputs = new Inputs();
+
 	Constants *constants = new Constants(inputs->gamma,inputs->n_param,inputs->concentration);
 	Design *design = new Design(inputs);
 	//design->print_staples();

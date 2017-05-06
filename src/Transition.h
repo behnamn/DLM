@@ -13,37 +13,29 @@
 #include "MyGraph.h"
 
 void reduce_state(vector<int>&);
-vector< pair<int,int> > get_changes(vector<int>, int );
 
-class MyMaps {
+class Transition {
 public:
-	MyMaps();
-	virtual ~MyMaps(){}
-
-	std::map< 	vector<int>,
-				vector<int> >
-				state_map;
-				/*
-		 		* maps to reduced states.
-		 		*/
-	std::map<	pair< vector<int>,int >,
-				vector <pair<int,int> > >
-				transition_map;
-				/*
-				 * Maps from:
-				 * - a reduced state (vector<int>).
-				 * - position of the domain (int).
-				 * To:
-				 * - possible final states:
-				 *   - first: changed to (int).
-				 *   - position of cross_domain (-1 = none).
-				 */
-
-	void fill_state_map();
-	void fill_transition_map();
+    Transition();
+    Transition(ST , const DOM, const int, bool);
+    virtual ~Transition(){}
+    
+    ST staple;
+    DOM domain;
+    
+    int target;
+    bool cross;
+    bool possible;
+    bool bind; 		//1: bind, 0: unbind
+    pair<CR, bool> crossover;
+    
+    double rate;
+    
+    void decide(const vector<int> &, const int);
+    void apply(MyGraph*);
 };
 
-
+/*
 class Transition {
 public:
 	Transition();
@@ -64,6 +56,7 @@ public:
 	
 	void apply(MyGraph*);
 };
+*/
 
 
 #endif 
