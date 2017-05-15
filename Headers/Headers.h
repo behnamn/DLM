@@ -14,8 +14,11 @@
 #include <fstream>
 #include <vector>
 #include <stdio.h>      /* printf, fopen */
-#include <stdlib.h>     /* exit, EXIT_FAILURE */
+#include <stdlib.h>     /* exit, EXIT_FAILURE, system */
 #include <sstream> //for double to string
+#include <iomanip>
+
+#include <time.h>
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -36,6 +39,12 @@
 #include <boost/generator_iterator.hpp>
 
 #include <boost/algorithm/string.hpp> //For splitting strings boost::split()
+
+//For make_vector
+#include <boost/fusion/container/generation/make_vector.hpp>
+#include <boost/fusion/include/make_vector.hpp>
+
+#include <boost/graph/dijkstra_shortest_paths_no_color_map.hpp>
 
 //For parse_input
 #include <cstring>

@@ -33,6 +33,12 @@ Inputs::Inputs (int argc, char * argv[]) {
 	loadOptions();
 	//print_params();
 }
+Inputs::Inputs () {
+    file_name = "input.txt";
+    loadInputFile();
+    loadOptions();
+    //print_params();
+}
 
 void Inputs::print_map(){
 	cout << "\n______________________________Printing Input Map_____________________________\n";
@@ -56,12 +62,15 @@ void Inputs::print_params(){
 	cout << "min_temp: " << min_temp << "\n";
 	cout << "const_T_interval: " << const_T_interval << "\n";
 	cout << "seq_dependence: " << seq_dependence << "\n"; 
-	cout << "trajectory_file: " << trajectory_file_name << "\n"; 
-	cout << "occupancy_file: " << occupancy_file_name << "\n"; 
+	
+	cout << "statistics_file: " << statistics_file_name << "\n";
 	cout << "scaffold_file: " << scaffold_file_name << "\n"; 
 	cout << "staple_file: " << staple_file_name << "\n"; 
 	cout << "domain_file: " << domain_file_name << "\n"; 
-	cout << "print_state_interval: " << print_state_interval << "\n";
+	cout << "write_state_every: " << write_state_every << "\n";
+    cout << "trajectory_file: " << trajectory_file_name << "\n";
+    cout << "write_transtion_every: " << write_transition_every << "\n";
+    cout << "transition_file: " << transition_file_name << "\n";
 	cout << "staple_species: ";
 	for (vector<int>::iterator it = staple_species.begin(); it!=staple_species.end(); ++it){
 		cout << *it << "\t";
@@ -208,9 +217,16 @@ void Inputs::loadOptions(){
 	getInputString("domain_file", domain_file_name);
 	getInputString("staple_file", staple_file_name);
 
+    getInputInt("write_state_every", &write_state_every);
 	getInputString("trajectory_file", trajectory_file_name);
-	getInputInt("print_state_interval", &print_state_interval);
-	getInputString("occupancy_file", occupancy_file_name);
+
+    getInputString("statistics_file", statistics_file_name);
+    
+    getInputInt("write_transition_every", &write_transition_every);
+    getInputString("transition_file", transition_file_name);
+    
+    getInputBool("make_movie", &make_movie);
+    
 }
 
 input_map::iterator Inputs::getInputValue(const char *skey)  {

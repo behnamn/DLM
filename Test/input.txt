@@ -7,7 +7,7 @@ n_param = 2.0
 
 concentration = 20.
 
-seq_dependence = yes
+seq_dependence = no
 
 max_temp = 100.
 min_temp = 40. 
@@ -26,15 +26,23 @@ staple_species = 1 2 3
 ###################################
 
 scaffold_file = Scaffold.txt
-domain_file = S_Lengths.txt
-staple_file = S_Staples.txt
+domain_file = U_Lengths.txt
+staple_file = U_Staples.txt
 
 
 ################################### 
 #####       Output Files      #####
 ###################################
 
-trajectory_file = trajectory.dat
-print_state_interval = 100000 
+statistics_file = statistics.dat
 
-occupancy_file = occupancy.dat
+write_state_every = 1000
+trajectory_file = trajectory.dat
+
+write_transition_every = 1000
+transition_file = transition.dat
+
+make_movie = true
+
+#occupancy_file = occupancy.dat
+

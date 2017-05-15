@@ -8,7 +8,7 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#include "Headers.h"
+#include "../Headers/Headers.h"
 
 /*
 const string Scaffold_file_name = "Scaffold.txt";
@@ -44,10 +44,19 @@ double minutes(double);
 
 double Cpm2spC(double);
 
+int circ_dist(int, int, int);
+
+string reverse_comp(string);
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 3)
+{
+    std::ostringstream out;
+    out << std::setprecision(n) << a_value;
+    return out.str();
+}
+
 #endif
-
-
-
 
 /*
 template <class T> void print_vec(vector<T> &vec);
@@ -64,10 +73,6 @@ double seconds(double minutes);
 double minutes(double seconds);
 double Cpm2spC (double Cpm);
 */
-
-
-
-
 
 
 /*

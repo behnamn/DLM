@@ -1,1 +1,5 @@
 occupancy.dat
+Movie/*
+transitions.dat
+statistics.dat
+trajectory.dat

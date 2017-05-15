@@ -1,15 +1,17 @@
 CC=g++
-LDIR=$(HOME)/CODE/libs/Boost/boost_1_61_0/
-CFLAGS=-I$(LDIR) -std=c++11 #-stdlib=libc++
+LDIR=$(HOME)/CODE/libs/Boost/boost_1_58_0/
+CFLAGS=-I$(LDIR) -std=c++11 #-g -pg #-stdlib=libc++
 #CFLAGS=-I$(LDIR) -stdlib=libc++
 #CFLAGS=-I$(LDIR) 
 ODIR=./bin/
-OBJS=$(ODIR)main.o $(ODIR)Simulation.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o
+OBJS=$(ODIR)main.o $(ODIR)Domain.o $(ODIR)Crossover.o $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)Simulation.o $(ODIR)TransitionManager.o $(ODIR)Statistics.o
 EXECUTABLE=$(ODIR)DLM
 SDIR=./src/
+HDIR=./Headers/
 
 
 #DEPS = $(SDIR)Common.h $(SDIR)MyGraph.h $(SDIR)TempRamp.h $(SDIR)Constants.h $(SDIR)Design.h $(SDIR)Simulation.h
+DEPS = $(SDIR)Crossover.h $(SDIR)Domain.h $(HDIR)VertexProperty.h $(HDIR)EdgeProperty.h $(SDIR)Graph.h 
 
 #%.o: %.cpp $(DEPS)
 #		$(CC) -c -o $@ $< $(CFLAGS)
@@ -20,32 +22,53 @@ SDIR=./src/
 $(EXECUTABLE): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(EXECUTABLE)
 
-$(ODIR)main.o: $(SDIR)main.cpp $(ODIR)Simulation.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o
+$(ODIR)main.o: $(SDIR)main.cpp $(ODIR)Design.o $(ODIR)Constants.o $(ODIR)Common.o $(ODIR)Strand.o $(ODIR)Input.o $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Transition.o $(ODIR)TransitionManager.o $(ODIR)Simulation.o $(ODIR)Statistics.o
 	$(CC) $(CFLAGS) -c $(SDIR)main.cpp -o $(ODIR)main.o
 
-$(ODIR)Simulation.o: $(SDIR)Simulation.cpp $(SDIR)Simulation.h $(ODIR)Common.o $(ODIR)Design.o $(ODIR)MyGraph.o $(ODIR)TempRamp.o $(ODIR)Constants.o
+$(ODIR)Simulation.o: $(SDIR)Simulation.cpp $(SDIR)Simulation.h $(ODIR)MyGraph.o $(ODIR)Statistics.o $(ODIR)TransitionManager.o 
 	$(CC) $(CFLAGS) -c $(SDIR)Simulation.cpp -o $(ODIR)Simulation.o
 
-$(ODIR)MyGraph.o: $(SDIR)MyGraph.cpp $(SDIR)MyGraph.h $(ODIR)Common.o $(ODIR)Design.o
-	$(CC) $(CFLAGS) -c $(SDIR)MyGraph.cpp -o $(ODIR)MyGraph.o
+$(ODIR)Statistics.o: $(SDIR)Statistics.cpp $(SDIR)Statistics.h $(ODIR)Transition.o
+	$(CC) $(CFLAGS) -c $(SDIR)Statistics.cpp -o $(ODIR)Statistics.o
 
-$(ODIR)TempRamp.o: $(SDIR)TempRamp.cpp $(SDIR)TempRamp.h $(ODIR)Common.o
+$(ODIR)TransitionManager.o: $(SDIR)TransitionManager.cpp $(SDIR)TransitionManager.h $(ODIR)Transition.o $(ODIR)TempRamp.o
+	$(CC) $(CFLAGS) -c $(SDIR)TransitionManager.cpp -o $(ODIR)TransitionManager.o
+
+$(ODIR)Transition.o: $(SDIR)Transition.cpp $(SDIR)Transition.h $(ODIR)MyGraph.o
+	$(CC) $(CFLAGS) -c $(SDIR)Transition.cpp -o $(ODIR)Transition.o
+
+$(ODIR)TempRamp.o: $(SDIR)TempRamp.cpp $(SDIR)TempRamp.h $(ODIR)Common.o $(ODIR)Input.o
 	$(CC) $(CFLAGS) -c $(SDIR)TempRamp.cpp -o $(ODIR)TempRamp.o
 
-$(ODIR)Design.o: $(SDIR)Design.cpp $(SDIR)Design.h $(ODIR)Common.o $(ODIR)Strand.o
+$(ODIR)MyGraph.o: $(SDIR)MyGraph.cpp $(SDIR)MyGraph.h $(ODIR)Design.o
+	$(CC) $(CFLAGS) -c $(SDIR)MyGraph.cpp -o $(ODIR)MyGraph.o
+
+$(ODIR)Design.o: $(SDIR)Design.cpp $(SDIR)Design.h $(ODIR)Staple.o $(ODIR)Scaffold.o $(ODIR)Constants.o $(ODIR)Input.o
 	$(CC) $(CFLAGS) -c $(SDIR)Design.cpp -o $(ODIR)Design.o
 
-$(ODIR)Strand.o: $(SDIR)Strand.cpp $(SDIR)Strand.h $(ODIR)Common.o $(ODIR)Input.o
+$(ODIR)Scaffold.o: $(SDIR)Scaffold.cpp $(SDIR)Scaffold.h $(ODIR)Strand.o
+	$(CC) $(CFLAGS) -c $(SDIR)Scaffold.cpp -o $(ODIR)Scaffold.o
+
+$(ODIR)Staple.o: $(SDIR)Staple.cpp $(SDIR)Staple.h $(ODIR)Strand.o
+	$(CC) $(CFLAGS) -c $(SDIR)Staple.cpp -o $(ODIR)Staple.o
+
+$(ODIR)Strand.o: $(SDIR)Strand.cpp $(SDIR)Strand.h $(ODIR)Crossover.o
 	$(CC) $(CFLAGS) -c $(SDIR)Strand.cpp -o $(ODIR)Strand.o
+
+$(ODIR)Crossover.o: $(SDIR)Crossover.cpp $(SDIR)Crossover.h $(ODIR)Domain.o
+	$(CC) $(CFLAGS) -c $(SDIR)Crossover.cpp -o $(ODIR)Crossover.o
+
+$(ODIR)Domain.o: $(SDIR)Domain.cpp $(SDIR)Domain.h $(ODIR)Common.o $(HDIR)Graph.h
+	$(CC) $(CFLAGS) -c $(SDIR)Domain.cpp -o $(ODIR)Domain.o
 
 $(ODIR)Constants.o: $(SDIR)Constants.cpp $(SDIR)Constants.h $(ODIR)Common.o
 	$(CC) $(CFLAGS) -c $(SDIR)Constants.cpp -o $(ODIR)Constants.o
 
-$(ODIR)Common.o: $(SDIR)Common.cpp $(SDIR)Common.h $(SDIR)Headers.h
-	$(CC) $(CFLAGS) -c $(SDIR)Common.cpp -o $(ODIR)Common.o
-
-$(ODIR)Input.o: $(SDIR)Input.cpp $(SDIR)Input.h $(SDIR)Headers.h 
+$(ODIR)Input.o: $(SDIR)Input.cpp $(SDIR)Input.h $(ODIR)Common.o 
 	$(CC) $(CFLAGS) -c $(SDIR)Input.cpp -o $(ODIR)Input.o
+
+$(ODIR)Common.o: $(SDIR)Common.cpp $(SDIR)Common.h $(HDIR)Headers.h
+	$(CC) $(CFLAGS) -c $(SDIR)Common.cpp -o $(ODIR)Common.o
 
 clean:
 	rm $(ODIR)*o $(ODIR)DLM

@@ -8,7 +8,6 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-#include "Headers.h"
 #include "Common.h"
 
 const double k_plus = pow(10,3); // mol-1  m3  s-1
@@ -17,7 +16,13 @@ const double l_ds = 0.34 * pow(10,-9); // m  bp-1
 const double l_ss = 0.6 * pow(10,-9); // m  nt-1
 const double lambda_ss = 1.8 * pow(10,-9); //  m
 
+const double ss_hack = l_ss * lambda_ss;
+const double ds_hack = l_ds * l_ds;
+const double cs_hack = lambda_ss * lambda_ss;
+
+
 const double salt_per_phosphate = -0.944;
+const double salt_per_phosphate_hack = (0.368 * salt_per_phosphate) / 1000.;
 const double conc_Mg = 12.5; // mol  m-3
 const double conc_Tris = 40.; // mol  m-3
 
@@ -63,6 +68,7 @@ class Constants{
 	public:
 		Constants();
 		Constants(double, double, double);
+		virtual ~Constants();
 		
 		void write_params(ofstream &); 
 		void change_gamma(double);
@@ -74,9 +80,6 @@ class Constants{
 };
 
 #endif
-
-
-
 
 // **** constants in dectameters
 //const double l_ds = 0.34 * pow(10,-8); // nm / bp ---> dm / bp

@@ -7,7 +7,6 @@
 
 #include "Common.h"
 
-
 void print_matrix(vector< vector<double> >& matrix){
 	for (int i=0; i<matrix.size(); i++){
 		for (int j=0; j<matrix[i].size(); j++){
@@ -62,4 +61,37 @@ double minutes(double seconds) {
 
 double Cpm2spC(double Cpm){
 	return 1. / (Cpm / 60.);
+}
+
+
+int circ_dist(int p1, int p2, int scaffold_length){
+	int a1, a2, result;
+	a1 = ((scaffold_length + p1 - p2) % scaffold_length) +1 ;
+	a2 = ((scaffold_length + p2 - p1) % scaffold_length) +1 ;
+	if (a1<a2){
+		result = a1;
+	}
+	else if (a1>a2){
+		result = a2;
+	}
+	else {
+		cout << "Warning: a1=a2." << endl;
+		result = a2;
+	}
+	return result;
+}
+
+string reverse_comp(string seq){
+	string result;
+	for (string::reverse_iterator rit=seq.rbegin(); rit!=seq.rend(); ++rit){
+		if ((*rit) == 'G') {result += 'C';}
+		else if ((*rit) == 'C') {result += 'G';}
+		else if ((*rit) == 'T') {result += 'A';}
+		else if ((*rit) == 'A') {result += 'T';}
+        else {
+            cout << "Error:\t nucleotide type " << (*rit) << " not recognised (ATCG).\n";
+            exit (EXIT_FAILURE);
+        }
+	}
+	return result;
 }
